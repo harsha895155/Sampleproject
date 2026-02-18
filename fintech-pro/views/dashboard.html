@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | FintechPro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../public/css/layout.css">
+    <link rel="stylesheet" href="../public/css/components.css">
+    <style>
+        .stat-card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-shell">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="flex items-center gap-2">
+                    <div style="width: 24px; height: 24px; background: var(--color-primary); border-radius: 4px;"></div>
+                    <span class="font-bold text-xl">FintechPro</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <span>🏠</span> <span>Dashboard</span>
+                </a>
+                <a href="expenses.html" class="nav-item">
+                    <span>📉</span> <span>Expenses</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span>📈</span> <span>Income</span>
+                </a>
+                <a href="reports.html" class="nav-item">
+                    <span>📊</span> <span>Reports</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span>⚙️</span> <span>Settings</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="login.html" class="nav-item">
+                    <span>🚪</span> <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="flex justify-between items-center mb-10">
+                <div>
+                    <h1 class="text-3xl font-bold text-navy" style="color: var(--color-navy);">Financial Overview</h1>
+                    <p class="text-slate-500">Welcome back, Harsha. Here's your summary.</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="btn btn-outline">Generate Report</button>
+                    <a href="expenses.html" class="btn btn-primary">+ Add Expense</a>
+                    <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--color-slate-200); border: 2px solid white; box-shadow: var(--shadow-sm);"></div>
+                </div>
+            </header>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+                <div class="card flex items-center gap-6">
+                    <div class="stat-card-icon" style="background-color: var(--color-primary-light); color: var(--color-primary);">💰</div>
+                    <div>
+                        <p class="text-sm font-semibold text-slate-500 mb-1">Total Balance</p>
+                        <h2 class="text-2xl font-bold text-navy" style="color: var(--color-navy);">$12,450.00</h2>
+                        <p class="text-xs font-semibold text-success mt-1">↑ 12% from last month</p>
+                    </div>
+                </div>
+                <div class="card flex items-center gap-6">
+                    <div class="stat-card-icon" style="background-color: #D1FAE5; color: #065F46;">↗️</div>
+                    <div>
+                        <p class="text-sm font-semibold text-slate-500 mb-1">Total Income</p>
+                        <h2 class="text-2xl font-bold text-navy" style="color: var(--color-navy);">$8,200.00</h2>
+                    </div>
+                </div>
+                <div class="card flex items-center gap-6">
+                    <div class="stat-card-icon" style="background-color: #FEE2E2; color: #991B1B;">↘️</div>
+                    <div>
+                        <p class="text-sm font-semibold text-slate-500 mb-1">Total Expenses</p>
+                        <h2 class="text-2xl font-bold text-navy" style="color: var(--color-navy);">$3,750.00</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts & Transactions -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <!-- Chart Placeholder -->
+                <div class="card lg:col-span-3">
+                    <div class="flex justify-between items-center mb-8">
+                        <h3 class="font-bold text-lg">Spending Trends</h3>
+                        <select class="form-input" style="width: auto; margin-bottom: 0;">
+                            <option>Last 6 months</option>
+                            <option>Last 12 months</option>
+                        </select>
+                    </div>
+                    <div style="height: 300px; width: 100%; background: var(--color-slate-50); border-radius: var(--radius-lg); display: flex; align-items: flex-end; gap: var(--spacing-6); padding: var(--spacing-6); border: 1px dashed var(--color-slate-200);">
+                        <div style="flex: 1; background: var(--color-primary); height: 60%; border-radius: var(--radius-sm); opacity: 0.6;"></div>
+                        <div style="flex: 1; background: var(--color-primary); height: 45%; border-radius: var(--radius-sm); opacity: 0.8;"></div>
+                        <div style="flex: 1; background: var(--color-primary); height: 80%; border-radius: var(--radius-sm);"></div>
+                        <div style="flex: 1; background: var(--color-primary); height: 65%; border-radius: var(--radius-sm); opacity: 0.7;"></div>
+                        <div style="flex: 1; background: var(--color-primary); height: 50%; border-radius: var(--radius-sm); opacity: 0.9;"></div>
+                        <div style="flex: 1; background: var(--color-primary); height: 90%; border-radius: var(--radius-sm); opacity: 1;"></div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="card lg:col-span-1">
+                    <h3 class="font-bold text-lg mb-6">Recent Activity</h3>
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-sm font-bold">Cloud Server</p>
+                                <p class="text-xs text-slate-500">Subscription • 2h ago</p>
+                            </div>
+                            <span class="text-sm font-bold text-danger">-$120.00</span>
+                        </div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-sm font-bold">Project Bonus</p>
+                                <p class="text-xs text-slate-500">Income • 5h ago</p>
+                            </div>
+                            <span class="text-sm font-bold text-success">+$2,500.00</span>
+                        </div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-sm font-bold">Starbucks</p>
+                                <p class="text-xs text-slate-500">Dining • 1d ago</p>
+                            </div>
+                            <span class="text-sm font-bold text-danger">-$12.00</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline w-full mt-10">View All History</button>
+                </div>
+
+                <!-- Main Transactions Table -->
+                <div class="lg:col-span-4 mt-4">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-bold text-lg">Transaction History</h3>
+                        <a href="reports.html" class="text-sm font-semibold text-primary" style="text-decoration: none;">View full report →</a>
+                    </div>
+                    <div class="table-container bg-white">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Recipient / Sender</th>
+                                    <th>Category</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th style="text-align: right;">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="flex items-center gap-3">
+                                            <div style="width: 32px; height: 32px; border-radius: 8px; background: #EEE;" class="flex items-center justify-center">☁️</div>
+                                            <span class="font-semibold">DigitalOcean Inc.</span>
+                                        </div>
+                                    </td>
+                                    <td>Software</td>
+                                    <td>Oct 12, 2023</td>
+                                    <td><span class="badge badge-success">Completed</span></td>
+                                    <td style="text-align: right;" class="font-bold">-$450.00</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="flex items-center gap-3">
+                                            <div style="width: 32px; height: 32px; border-radius: 8px; background: #EEE;" class="flex items-center justify-center">🏠</div>
+                                            <span class="font-semibold">Rent Payment</span>
+                                        </div>
+                                    </td>
+                                    <td>Housing</td>
+                                    <td>Oct 10, 2023</td>
+                                    <td><span class="badge badge-success">Completed</span></td>
+                                    <td style="text-align: right;" class="font-bold">-$1,200.00</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="flex items-center gap-3">
+                                            <div style="width: 32px; height: 32px; border-radius: 8px; background: #EEE;" class="flex items-center justify-center">💼</div>
+                                            <span class="font-semibold">Salary Credit</span>
+                                        </div>
+                                    </td>
+                                    <td>Income</td>
+                                    <td>Oct 05, 2023</td>
+                                    <td><span class="badge badge-success">Completed</span></td>
+                                    <td style="text-align: right;" class="font-bold" style="color: var(--color-success);">+$8,200.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

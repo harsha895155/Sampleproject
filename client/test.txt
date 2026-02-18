@@ -1,0 +1,2 @@
+Vite is reading this file correctly.
+Timestamp: 1770655000000

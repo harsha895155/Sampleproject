@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports & Analytics | FintechPro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../public/css/layout.css">
+    <link rel="stylesheet" href="../public/css/components.css">
+</head>
+<body>
+    <div class="app-shell">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="flex items-center gap-2">
+                    <div style="width: 24px; height: 24px; background: var(--color-primary); border-radius: 4px;"></div>
+                    <span class="font-bold text-xl">FintechPro</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span>🏠</span> <span>Dashboard</span>
+                </a>
+                <a href="expenses.html" class="nav-item">
+                    <span>📉</span> <span>Expenses</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span>📈</span> <span>Income</span>
+                </a>
+                <a href="reports.html" class="nav-item active">
+                    <span>📊</span> <span>Reports</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span>⚙️</span> <span>Settings</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="login.html" class="nav-item">
+                    <span>🚪</span> <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="flex justify-between items-center mb-10">
+                <div>
+                    <h1 class="text-3xl font-bold text-navy" style="color: var(--color-navy);">Reports & Analytics</h1>
+                    <p class="text-slate-500">In-depth analysis of your financial performance.</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="btn btn-primary">Download full PDF Report</button>
+                    <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--color-slate-200); border: 2px solid white; box-shadow: var(--shadow-sm);"></div>
+                </div>
+            </header>
+
+            <!-- Filters -->
+            <div class="card mb-10">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">Period</label>
+                        <select class="form-input">
+                            <option>Last 30 Days</option>
+                            <option>Year to Date</option>
+                            <option>Custom Range</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">Category</label>
+                        <select class="form-input">
+                            <option>All Categories</option>
+                            <option>Software</option>
+                            <option>Rent</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">User / Employee</label>
+                        <select class="form-input">
+                            <option>All Users</option>
+                            <option>Harsha User</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-secondary">Apply Filters</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Breakdown Chart -->
+                <div class="card">
+                    <h3 class="font-bold text-lg mb-8">Expense by Category</h3>
+                    <div style="height: 300px; position: relative; background: var(--color-slate-50); border-radius: var(--radius-lg); border: 1px dashed var(--color-slate-200); display: flex; align-items: center; justify-content: center;">
+                        <!-- CSS Donut Chart Mock -->
+                        <div style="width: 180px; height: 180px; border-radius: 50%; background: conic-gradient(var(--color-primary) 0% 45%, var(--color-success) 45% 70%, var(--color-warning) 70% 90%, var(--color-danger) 90% 100%); position: relative; display: flex; align-items: center; justify-content: center;">
+                            <div style="width: 120px; height: 120px; border-radius: 50%; background: white; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <span class="text-xs text-slate-500 font-bold">TOTAL</span>
+                                <span class="font-bold text-lg">$3,750</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mt-8">
+                        <div class="flex items-center gap-2 text-xs font-semibold">
+                            <div style="width: 10px; height: 10px; border-radius: 2px; background: var(--color-primary);"></div>
+                            <span class="text-slate-500">Fixed Costs (45%)</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs font-semibold">
+                            <div style="width: 10px; height: 10px; border-radius: 2px; background: var(--color-success);"></div>
+                            <span class="text-slate-500">Operations (25%)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comparison -->
+                <div class="card">
+                    <h3 class="font-bold text-lg mb-8">Income vs Expenses</h3>
+                    <div style="height: 300px; background: var(--color-slate-50); border-radius: var(--radius-lg); border: 1px dashed var(--color-slate-200); padding: var(--spacing-6); display: flex; flex-direction: column; justify-content: space-around;">
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs font-bold"><span>Income</span> <span>$8,200</span></div>
+                            <div style="width: 100%; height: 12px; background: var(--color-slate-200); border-radius: 6px; overflow: hidden;">
+                                <div style="width: 85%; height: 100%; background: var(--color-success);"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs font-bold"><span>Expenses</span> <span>$3,750</span></div>
+                            <div style="width: 100%; height: 12px; background: var(--color-slate-200); border-radius: 6px; overflow: hidden;">
+                                <div style="width: 45%; height: 100%; background: var(--color-danger);"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs font-bold"><span>Profit Margin</span> <span>54%</span></div>
+                            <div style="width: 100%; height: 12px; background: var(--color-slate-200); border-radius: 6px; overflow: hidden;">
+                                <div style="width: 54%; height: 100%; background: var(--color-primary);"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expenses | FintechPro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <style>
+        body { font-family: 'Outfit', sans-serif; margin: 0; }
+        .sidebar {
+            width: 260px;
+            background: rgba(255,255,255,0.02);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255,255,255,0.08);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1.25rem;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 10;
+        }
+        .nav-item {
+            width: 100%;
+            height: 54px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0 1.25rem;
+            margin-bottom: 0.75rem;
+            color: #94A3B8;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            gap: 1rem;
+            box-sizing: border-box;
+        }
+        .nav-item:hover, .nav-item.active {
+            background: linear-gradient(135deg, #6366F1, #8B5CF6, #D946EF);
+            color: white;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
+            transform: translateX(5px);
+        }
+        .content {
+            margin-left: 260px;
+            padding: 4rem;
+            min-height: 100vh;
+        }
+        .simple-form-input {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 1rem;
+            padding: 1rem;
+            color: white;
+            width: 100%;
+            outline: none;
+            margin-bottom: 1.25rem;
+            font-family: inherit;
+        }
+        .simple-form-input:focus {
+            border-color: #6366F1;
+        }
+        
+        /* Dark Theme Select Dropdown */
+        select.simple-form-input {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236366F1' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 3rem;
+            cursor: pointer;
+        }
+        
+        select.simple-form-input option {
+            background: #1e293b;
+            color: white;
+            padding: 0.75rem;
+        }
+        
+        select.simple-form-input option:hover,
+        select.simple-form-input option:checked {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3));
+            color: #a5b4fc;
+        }
+    </style>
+</head>
+<body class="creative-mode">
+    <div class="sidebar">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 4rem; padding-left: 0.5rem;">
+            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #6366F1, #8B5CF6, #D946EF); border-radius: 10px; transform: rotate(45deg); display: flex; align-items: center; justify-content: center;">
+                <span style="transform: rotate(-45deg); color: white; font-weight: 800;">F</span>
+            </div>
+            <span style="font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em;">FINTECH<span class="text-gradient-creative">PRO</span></span>
+        </div>
+        
+        <a href="/views/dashboard.html" class="nav-item">
+            <span style="font-size: 1.25rem;">🏠</span>
+            <span>Dashboard</span>
+        </a>
+        <a href="/views/expenses.html" class="nav-item active">
+            <span style="font-size: 1.25rem;">💸</span>
+            <span>Expenses</span>
+        </a>
+        <a href="/views/transactions.html" class="nav-item">
+            <span style="font-size: 1.25rem;">📋</span>
+            <span>Transactions</span>
+        </a>
+        <a href="/views/reports.html" class="nav-item">
+            <span style="font-size: 1.25rem;">📊</span>
+            <span>Reports</span>
+        </a>
+        <a href="/views/admin.html" id="adminNavItem" class="nav-item">
+            <span style="font-size: 1.25rem;">👤</span>
+            <span>Admin</span>
+        </a>
+        <a href="/views/profile.html" class="nav-item">
+            <span style="font-size: 1.25rem;">👤</span>
+            <span>Profile</span>
+        </a>
+        <a href="/views/settings.html" class="nav-item">
+            <span style="font-size: 1.25rem;">⚙️</span>
+            <span>Settings</span>
+        </a>
+        <a href="/views/support.html" class="nav-item">
+            <span style="font-size: 1.25rem;">🎧</span>
+            <span>Support</span>
+        </a>
+        
+        <div style="flex: 1;"></div>
+        
+        <a href="/index.html" class="nav-item" style="margin-bottom: 0;">
+            <span style="font-size: 1.25rem;">🚪</span>
+            <span>Logout</span>
+        </a>
+    </div>
+
+    <main class="content">
+        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
+            <h1 style="font-size: 2.5rem; font-weight: 800; margin: 0;">Track <span class="text-gradient-creative">Expenses</span></h1>
+            <div id="headerAvatar" style="width: 50px; height: 50px; background: linear-gradient(135deg, #6366F1, #D946EF); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 800; color: white; background-size: cover; background-position: center; border: 1px solid rgba(255,255,255,0.08);">U</div>
+        </header>
+        
+        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 4rem;">
+            <div>
+                <div class="glass-card" style="padding: 2.5rem; position: sticky; top: 4rem;">
+                    <h2 style="font-weight: 800; margin-bottom: 2rem; font-size: 1.25rem;">New Expense</h2>
+                    <form id="expenseForm">
+                        <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;">AMOUNT (₹)</label>
+                        <input type="number" id="expAmount" class="simple-form-input" placeholder="0.00" required>
+                        
+                        <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;">MERCHANT</label>
+                        <input type="text" id="expMerchant" class="simple-form-input" placeholder="e.g. Starbucks" required>
+                        
+                        <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;">CATEGORY</label>
+                        <select id="expCategory" class="simple-form-input">
+                            <option>Food & Drink</option>
+                            <option>Transport</option>
+                            <option>Shopping</option>
+                            <option>Bills</option>
+                        </select>
+                        
+                        <button type="submit" class="btn-creative btn-primary-creative w-full" style="padding: 1.125rem; font-size: 1rem; border-radius: 1rem;">Save Expense</button>
+                    </form>
+                    <button id="clearBtn" class="w-full" style="margin-top: 1rem; background: transparent; border: 1px solid rgba(255,255,255,0.1); color: #94A3B8; padding: 0.5rem; border-radius: 0.5rem; cursor: pointer; font-size: 0.8rem;">Clear All History</button>
+                </div>
+            </div>
+            
+            <div>
+                <h2 style="font-weight: 800; margin-bottom: 2rem; font-size: 1.25rem;">Recent History</h2>
+                <div class="glass-card" style="border-radius: 1.5rem; overflow: hidden;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;" id="expenseTable">
+                        <thead>
+                            <tr style="background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <th style="padding: 1.5rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800;">DESCRIPTION</th>
+                                <th style="padding: 1.5rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800;">CATEGORY</th>
+                                <th style="padding: 1.5rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800; text-align: right;">AMOUNT</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expenseBody">
+                            <!-- Rows loaded from localStorage -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const expenseBody = document.getElementById('expenseBody');
+        
+        // Load data
+        window.addEventListener('load', () => {
+            renderExpenses();
+            
+            const loggedInUser = JSON.parse(localStorage.getItem('fintech_logged_in_user'));
+            
+            // Avatar Logic
+            const avatar = document.getElementById('headerAvatar');
+            const savedPhoto = localStorage.getItem('fintech_profile_pic');
+            const userInitial = (loggedInUser && loggedInUser.name ? loggedInUser.name.charAt(0) : 'U').toUpperCase();
+
+            if (savedPhoto && savedPhoto.startsWith('data:image')) {
+                avatar.style.backgroundImage = `url(${savedPhoto})`;
+                avatar.textContent = '';
+            } else {
+                avatar.textContent = userInitial;
+            }
+
+            // RBAC: Show Admin only for administrators
+            const userRole = (loggedInUser && loggedInUser.role) ? loggedInUser.role.toLowerCase() : '';
+            const adminLink = document.getElementById('adminNavItem');
+            if (adminLink) {
+                if (userRole === 'administrator') {
+                    adminLink.style.display = 'flex';
+                } else {
+                    adminLink.style.display = 'none';
+                }
+            }
+        });
+
+        function renderExpenses() {
+            const expenses = JSON.parse(localStorage.getItem('fintech_expenses')) || [
+                { merchant: 'Netflix Subscription', category: 'Bills', amount: 899 },
+                { merchant: 'Gas Station', category: 'Transport', amount: 3500 }
+            ];
+            
+            expenseBody.innerHTML = '';
+            expenses.forEach(exp => {
+                const formatted = new Intl.NumberFormat('en-IN', {
+                    style: 'currency',
+                    currency: 'INR'
+                }).format(exp.amount);
+
+                const row = `
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.02);">
+                        <td style="padding: 1.5rem;"><p style="font-weight: 700; margin: 0;">${exp.merchant}</p></td>
+                        <td style="padding: 1.5rem;"><span style="color: #6366F1; font-weight: 700; font-size: 0.75rem;">${exp.category}</span></td>
+                        <td style="padding: 1.5rem; text-align: right; font-weight: 800;">-₹${exp.amount.toLocaleString('en-IN')}</td>
+                    </tr>
+                `;
+                expenseBody.insertAdjacentHTML('beforeend', row);
+            });
+        }
+
+        document.getElementById('expenseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const amount = parseFloat(document.getElementById('expAmount').value);
+            const merchant = document.getElementById('expMerchant').value;
+            const category = document.getElementById('expCategory').value;
+            
+            const expenses = JSON.parse(localStorage.getItem('fintech_expenses')) || [
+                { merchant: 'Netflix Subscription', category: 'Bills', amount: 899 },
+                { merchant: 'Gas Station', category: 'Transport', amount: 3500 }
+            ];
+            
+            expenses.unshift({ merchant, category, amount });
+            localStorage.setItem('fintech_expenses', JSON.stringify(expenses));
+            
+            // Subtract from balance
+            let balance = parseFloat(localStorage.getItem('fintech_balance')) || 452200;
+            balance -= amount;
+            localStorage.setItem('fintech_balance', balance);
+
+            renderExpenses();
+            this.reset();
+            alert('Expense saved and synchronized!');
+        });
+
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            if(confirm('Clear all data?')) {
+                localStorage.removeItem('fintech_expenses');
+                localStorage.setItem('fintech_balance', 452200);
+                renderExpenses();
+            }
+        });
+    </script>
+</body>
+</html>

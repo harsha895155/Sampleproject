@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gateway | FintechPro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/variables.css">
+    <style>
+        body { font-family: 'Outfit', sans-serif; }
+        .auth-nebula {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-dark-bg);
+            background-image: var(--mesh-gradient);
+            padding: 2rem;
+        }
+        .login-box {
+            width: 100%;
+            max-width: 450px;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(40px) saturate(200%);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 3rem;
+            padding: 4rem;
+            box-shadow: 0 50px 100px -20px rgba(0,0,0,0.5);
+            animation: slide-up 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        @keyframes slide-up {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .creative-input {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 1.25rem;
+            padding: 1.25rem;
+            color: white;
+            width: 100%;
+            outline: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        .creative-input:focus {
+            border-color: var(--color-aurora-1);
+            background: rgba(255,255,255,0.08);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+        }
+    </style>
+</head>
+<body class="creative-mode">
+    <div class="auth-nebula">
+        <div class="login-box">
+            <div class="text-center mb-12">
+                <div style="width: 60px; height: 60px; background: var(--aurora-gradient); border-radius: 18px; margin: 0 auto 2rem; display: flex; align-items: center; justify-content: center; transform: rotate(15deg);">
+                    <span style="color: white; font-weight: 800; font-size: 1.5rem; transform: rotate(-15deg);">F</span>
+                </div>
+                <h1 class="font-bold text-4xl mb-3 tracking-tight">Identity <span class="text-gradient-creative">Verified</span></h1>
+                <p class="text-slate-400">Step into your workspace.</p>
+            </div>
+
+            <form action="/views/dashboard.html">
+                <div class="mb-6">
+                    <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-aurora-4); margin-bottom: 0.75rem;">Command Access</label>
+                    <input type="email" class="creative-input" placeholder="ACCESS_EMAIL" required>
+                </div>
+                <div class="mb-10">
+                    <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-aurora-4); margin-bottom: 0.75rem;">Neural Key</label>
+                    <input type="password" class="creative-input" placeholder="••••••••••••" required>
+                </div>
+                
+                <button type="submit" class="btn-creative btn-primary-creative w-full" style="padding: 1.25rem; font-size: 1rem; border-radius: 1.5rem;">Initialize Session</button>
+                <button type="cancel" class="btn-creative btn-primary-creative w-full" style="padding: 1.25rem; font-size: 1rem; border-radius: 1.5rem;">Cancel</button>
+            </form>
+
+            <div style="margin-top: 3rem; text-align: center;">
+                <p class="text-sm text-slate-500">Need a new identity? <a href="/views/signup.html" class="font-bold" style="color: white; text-decoration: none;">Register Hub</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

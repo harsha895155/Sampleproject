@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FintechPro | Professional Expense Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="public/css/layout.css">
+    <link rel="stylesheet" href="public/css/components.css">
+    <link rel="stylesheet" href="public/css/pages.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div style="width: 32px; height: 32px; background: var(--color-primary); border-radius: 6px;"></div>
+                <span class="font-bold text-xl" style="color: var(--color-navy); letter-spacing: -0.025em;">FintechPro</span>
+            </div>
+            <div class="flex items-center gap-8">
+                <div class="hidden md:flex gap-6">
+                    <a href="#features" class="footer-link" style="margin: 0;">Features</a>
+                    <a href="#solutions" class="footer-link" style="margin: 0;">Solutions</a>
+                    <a href="#" class="footer-link" style="margin: 0;">Pricing</a>
+                </div>
+                <div class="flex gap-3">
+                    <a href="views/login.html" class="btn btn-outline">Log in</a>
+                    <a href="views/signup.html" class="btn btn-primary">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container grid grid-cols-1 md:grid-cols-2 items-center gap-12">
+            <div class="hero-content animate-fade-in">
+                <span class="badge badge-success" style="margin-bottom: var(--spacing-4);">Now with Enterprise Audit Logs</span>
+                <h1 class="hero-title">Expense Management for the Modern Workforce.</h1>
+                <p class="hero-subtitle">The enterprise-grade platform that streamlines tracking, approvals, and reporting for teams of all sizes. Built for speed, designed for scale.</p>
+                <div class="flex gap-4">
+                    <a href="views/signup.html" class="btn btn-primary" style="padding: 0.875rem 2rem; font-size: var(--text-size-base);">Start for free</a>
+                    <a href="#" class="btn btn-outline" style="padding: 0.875rem 2rem; font-size: var(--text-size-base);">Book a Demo</a>
+                </div>
+                <div class="flex items-center gap-4 mt-8">
+                    <div class="flex -space-x-2">
+                        <!-- Placeholder avatars -->
+                        <div style="width: 32px; height: 32px; border-radius: 50%; background: #ccc; border: 2px solid white;"></div>
+                        <div style="width: 32px; height: 32px; border-radius: 50%; background: #ddd; border: 2px solid white;"></div>
+                        <div style="width: 32px; height: 32px; border-radius: 50%; background: #bbb; border: 2px solid white;"></div>
+                    </div>
+                    <span class="text-sm text-slate-500">Trusted by 2,000+ businesses worldwide</span>
+                </div>
+            </div>
+            <div class="hero-image-container">
+                <img src="public/images/fintech_hero_asset.png" alt="FintechPro Dashboard Preview" class="hero-image">
+            </div>
+        </div>
+    </header>
+
+    <!-- Partners -->
+    <section class="section" style="padding: var(--spacing-8) 0; border-bottom: 1px solid var(--color-slate-100); background: white;">
+        <div class="container flex flex-wrap justify-between items-center gap-8" style="opacity: 0.5; filter: grayscale(1);">
+            <span class="font-bold text-xl">TRUSTED PARTNERS</span>
+            <span class="font-bold text-xl">GLOBAL PAY</span>
+            <span class="font-bold text-xl">TECH CORP</span>
+            <span class="font-bold text-xl">FINANCE FLOW</span>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="section">
+        <div class="container">
+            <div class="text-center" style="max-width: 600px; margin: 0 auto var(--spacing-16);">
+                <h2 class="font-bold text-3xl" style="color: var(--color-navy); margin-bottom: var(--spacing-4);">Everything you need to manage finances like a pro.</h2>
+                <p class="text-slate-500">Powerful tools designed to give you absolute visibility and control over your organization's spending.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card card-hover feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="font-bold mb-3">Real-time Analytics</h3>
+                    <p class="text-sm text-slate-500">Track every dollar as it happens with live dashboards and instant reporting.</p>
+                </div>
+                <div class="card card-hover feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3 class="font-bold mb-3">Enterprise Security</h3>
+                    <p class="text-sm text-slate-500">Bank-level encryption and role-based access controls keep your data safe.</p>
+                </div>
+                <div class="card card-hover feature-card">
+                    <div class="feature-icon">🏢</div>
+                    <h3 class="font-bold mb-3">Team Approvals</h3>
+                    <p class="text-sm text-slate-500">Streamline reimbursement with automated approval workflows for managers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section bg-navy">
+        <div class="container text-center">
+            <h2 class="font-bold text-3xl mb-6">Ready to take control of your spending?</h2>
+            <p class="text-slate-300 mb-8" style="max-width: 500px; margin-left: auto; margin-right: auto;">Join thousands of freelancers and businesses who trust FintechPro to manage their expenses with precision.</p>
+            <a href="views/signup.html" class="btn btn-primary" style="padding: 1rem 3rem; font-size: var(--text-size-lg); background: white; color: var(--color-navy);">Start Your Free Trial</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="flex items-center gap-2 mb-6">
+                        <div style="width: 24px; height: 24px; background: var(--color-primary); border-radius: 4px;"></div>
+                        <span class="font-bold" style="color: var(--color-navy);">FintechPro</span>
+                    </div>
+                    <p class="text-sm text-slate-500">Building the future of financial management for modern teams.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Product</h4>
+                    <a href="#" class="footer-link">Features</a>
+                    <a href="#" class="footer-link">Integrations</a>
+                    <a href="#" class="footer-link">Enterprise</a>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Company</h4>
+                    <a href="#" class="footer-link">About Us</a>
+                    <a href="#" class="footer-link">Careers</a>
+                    <a href="#" class="footer-link">Contact</a>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Legal</h4>
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Terms of Service</a>
+                    <a href="#" class="footer-link">Security</a>
+                </div>
+            </div>
+            <div style="margin-top: var(--spacing-16); padding-top: var(--spacing-8); border-top: 1px solid var(--color-slate-100); text-align: center;">
+                <p class="text-xs text-slate-400">© 2026 FintechPro Inc. All rights reserved. Designed for excellence.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

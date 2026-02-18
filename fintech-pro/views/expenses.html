@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Expenses | FintechPro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../public/css/layout.css">
+    <link rel="stylesheet" href="../public/css/components.css">
+</head>
+<body>
+    <div class="app-shell">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="flex items-center gap-2">
+                    <div style="width: 24px; height: 24px; background: var(--color-primary); border-radius: 4px;"></div>
+                    <span class="font-bold text-xl">FintechPro</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span>🏠</span> <span>Dashboard</span>
+                </a>
+                <a href="expenses.html" class="nav-item active">
+                    <span>📉</span> <span>Expenses</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span>📈</span> <span>Income</span>
+                </a>
+                <a href="reports.html" class="nav-item">
+                    <span>📊</span> <span>Reports</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span>⚙️</span> <span>Settings</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="login.html" class="nav-item">
+                    <span>🚪</span> <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="flex justify-between items-center mb-10">
+                <div>
+                    <h1 class="text-3xl font-bold text-navy" style="color: var(--color-navy);">Expense Management</h1>
+                    <p class="text-slate-500">Track and categorize your spending with precision.</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="btn btn-outline">Export List</button>
+                    <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--color-slate-200); border: 2px solid white; box-shadow: var(--shadow-sm);"></div>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Add Expense Form -->
+                <div class="card lg:col-span-1" style="height: fit-content;">
+                    <h3 class="font-bold text-lg mb-6">Add New Transaction</h3>
+                    <form>
+                        <div class="form-group">
+                            <label class="form-label">Transaction Type</label>
+                            <div class="flex gap-4">
+                                <label class="flex items-center gap-2 text-sm">
+                                    <input type="radio" name="type" value="expense" checked style="width: auto; margin-bottom: 0;"> Expense
+                                </label>
+                                <label class="flex items-center gap-2 text-sm">
+                                    <input type="radio" name="type" value="income" style="width: auto; margin-bottom: 0;"> Income
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Amount ($)</label>
+                            <input type="number" class="form-input" placeholder="0.00" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Category</label>
+                            <select class="form-input">
+                                <option>Software & SaaS</option>
+                                <option>Office Supplies</option>
+                                <option>Travel & Lodging</option>
+                                <option>Dining & Entertainment</option>
+                                <option>Marketing</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Date</label>
+                            <input type="date" class="form-input" value="2023-10-15">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Payment Mode</label>
+                            <select class="form-input">
+                                <option>Corporate Card</option>
+                                <option>Bank Transfer</option>
+                                <option>Cash / Out of Pocket</option>
+                                <option>Digital Wallet</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Description (Optional)</label>
+                            <textarea class="form-input" style="height: 100px; resize: none;" placeholder="Provide context for this spending..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-full mt-4">Record Transaction</button>
+                    </form>
+                </div>
+
+                <!-- Expense List -->
+                <div class="card lg:col-span-2">
+                    <div class="flex justify-between items-center mb-8">
+                        <h3 class="font-bold text-lg">Detailed History</h3>
+                        <div class="flex gap-2">
+                            <input type="text" class="form-input" placeholder="Search..." style="margin-bottom: 0; width: 200px;">
+                            <button class="btn btn-outline">Filter</button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Mode</th>
+                                    <th style="text-align: right;">Amount</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>15 Oct</td>
+                                    <td class="font-semibold">Vercel Pro Plan</td>
+                                    <td>Software</td>
+                                    <td class="text-xs">Card</td>
+                                    <td style="text-align: right;" class="font-bold text-danger">-$20.00</td>
+                                    <td><button style="background: none; border: none; cursor: pointer;">✏️</button></td>
+                                </tr>
+                                <tr>
+                                    <td>14 Oct</td>
+                                    <td class="font-semibold">Uber for Meeting</td>
+                                    <td>Travel</td>
+                                    <td class="text-xs">Card</td>
+                                    <td style="text-align: right;" class="font-bold text-danger">-$18.50</td>
+                                    <td><button style="background: none; border: none; cursor: pointer;">✏️</button></td>
+                                </tr>
+                                <tr>
+                                    <td>12 Oct</td>
+                                    <td class="font-semibold">Starbucks Coffee</td>
+                                    <td>Dining</td>
+                                    <td class="text-xs">Cash</td>
+                                    <td style="text-align: right;" class="font-bold text-danger">-$5.75</td>
+                                    <td><button style="background: none; border: none; cursor: pointer;">✏️</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="flex justify-between items-center mt-6">
+                        <span class="text-sm text-slate-500">Showing 3 of 128 items</span>
+                        <div class="flex gap-2">
+                            <button class="btn btn-outline" style="padding: 0.5rem;">Previous</button>
+                            <button class="btn btn-outline" style="padding: 0.5rem;">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

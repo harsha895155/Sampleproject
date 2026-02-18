@@ -1,0 +1,19 @@
+const authorize = (...roles) => {
+    return (req, res, next) => {
+        const userRole = req.user && req.user.role ? req.user.role.toLowerCase().trim() : '';
+        const allowedRoles = roles.map(r => r.toLowerCase().trim());
+
+        console.log(`🔍 [Auth Check] Path: ${req.originalUrl}, User: ${req.user ? req.user.email : 'None'}, Role: [${userRole}], Allowed: [${allowedRoles.join(', ')}]`);
+
+        if (!req.user || !allowedRoles.includes(userRole)) {
+            console.log(`🚫 [Access Denied] Path: ${req.originalUrl}, User: ${req.user ? req.user.email : 'None'}, Role: [${userRole}]`);
+            return res.status(403).json({ 
+                success: false,
+                message: `User role ${req.user ? req.user.role : 'none'} is not authorized to access this route`
+            });
+        }
+        next();
+    };
+};
+
+module.exports = { authorize };

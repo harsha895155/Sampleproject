@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | FintechPro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <!-- Chart.js for Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        body { font-family: 'Outfit', sans-serif; margin: 0; }
+        .sidebar {
+            width: 260px;
+            background: rgba(255,255,255,0.02);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255,255,255,0.08);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1.25rem;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 10;
+        }
+        .nav-item {
+            width: 100%;
+            height: 54px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0 1.25rem;
+            margin-bottom: 0.75rem;
+            color: #94A3B8;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            gap: 1rem;
+            box-sizing: border-box;
+        }
+        .nav-item:hover, .nav-item.active {
+            background: linear-gradient(135deg, #6366F1, #8B5CF6, #D946EF);
+            color: white;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
+            transform: translateX(5px);
+        }
+        .content {
+            margin-left: 260px;
+            padding: 4rem;
+            min-height: 100vh;
+        }
+        .st-card {
+            padding: 2.5rem;
+            border-radius: 2rem;
+        }
+
+        /* Notification Styles */
+        .notif-bell {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.25rem;
+        }
+        .notif-bell:hover {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: scale(1.05);
+        }
+        .notif-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #F43F5E, #E11D48);
+            border-radius: 50%;
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #0F172A;
+            animation: pulse-badge 2s infinite;
+        }
+        .notif-badge.hidden { display: none; }
+        @keyframes pulse-badge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+        .notif-panel {
+            position: fixed;
+            top: 0;
+            right: -420px;
+            width: 400px;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(40px);
+            border-left: 1px solid rgba(255,255,255,0.08);
+            z-index: 1001;
+            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: -20px 0 60px rgba(0,0,0,0.5);
+        }
+        .notif-panel.open { right: 0; }
+        .notif-panel-header {
+            padding: 2rem 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .notif-panel-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem 1.5rem;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .notif-panel-body::-webkit-scrollbar { display: none; }
+        .notif-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 14px;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+        .notif-item:hover {
+            background: rgba(255,255,255,0.03);
+            border-color: rgba(255,255,255,0.06);
+        }
+        .notif-item.unread {
+            background: rgba(99, 102, 241, 0.06);
+            border-color: rgba(99, 102, 241, 0.12);
+        }
+        .notif-item.unread::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 60%;
+            background: linear-gradient(180deg, #6366F1, #D946EF);
+            border-radius: 2px;
+        }
+        .notif-item { position: relative; }
+        .notif-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        .notif-icon.login { background: rgba(234, 179, 8, 0.15); }
+        .notif-icon.account { background: rgba(16, 185, 129, 0.15); }
+        .notif-icon.transaction { background: rgba(244, 63, 94, 0.15); }
+        .notif-icon.system { background: rgba(99, 102, 241, 0.15); }
+        .notif-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .notif-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .mark-all-btn {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            color: #818CF8;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        .mark-all-btn:hover {
+            background: rgba(99, 102, 241, 0.2);
+        }
+    </style>
+</head>
+<body class="creative-mode">
+    <div class="sidebar">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 4rem; padding-left: 0.5rem;">
+            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #6366F1, #8B5CF6, #D946EF); border-radius: 10px; transform: rotate(45deg); display: flex; align-items: center; justify-content: center;">
+                <span style="transform: rotate(-45deg); color: white; font-weight: 800;">F</span>
+            </div>
+            <span style="font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em;">FINTECH<span class="text-gradient-creative">PRO</span></span>
+        </div>
+        
+        <a href="/views/dashboard.html" class="nav-item active">
+            <span style="font-size: 1.25rem;">🏠</span>
+            <span>Dashboard</span>
+        </a>
+        <a href="/views/expenses.html" class="nav-item">
+            <span style="font-size: 1.25rem;">💸</span>
+            <span>Expenses</span>
+        </a>
+        <a href="/views/transactions.html" class="nav-item">
+            <span style="font-size: 1.25rem;">📋</span>
+            <span>Transactions</span>
+        </a>
+        <a href="/views/reports.html" class="nav-item">
+            <span style="font-size: 1.25rem;">📊</span>
+            <span>Reports</span>
+        </a>
+        <a href="/views/admin.html" id="adminNavItem" class="nav-item">
+            <span style="font-size: 1.25rem;">👤</span>
+            <span>Admin</span>
+        </a>
+        <a href="/views/profile.html" class="nav-item">
+            <span style="font-size: 1.25rem;">👤</span>
+            <span>Profile</span>
+        </a>
+        <a href="/views/settings.html" class="nav-item">
+            <span style="font-size: 1.25rem;">⚙️</span>
+            <span>Settings</span>
+        </a>
+        <a href="/views/support.html" class="nav-item">
+            <span style="font-size: 1.25rem;">🎧</span>
+            <span>Support</span>
+        </a>
+        
+        <div style="flex: 1;"></div>
+        
+        <a href="/index.html" class="nav-item" style="margin-bottom: 0;">
+            <span style="font-size: 1.25rem;">🚪</span>
+            <span>Logout</span>
+        </a>
+    </div>
+
+    <main class="content">
+        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4rem;">
+            <div style="display: flex; align-items: center; gap: 1.5rem;">
+                <!-- Mini Avatar -->
+                <div id="headerAvatar" style="width: 54px; height: 54px; background: linear-gradient(135deg, #6366F1, #D946EF); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 800; color: white; background-size: cover; background-position: center; border: 1px solid rgba(255,255,255,0.08);">U</div>
+                <div>
+                    <h1 style="font-size: 2.5rem; font-weight: 800; margin: 0;">Welcome, <span id="welcomeName" class="text-gradient-creative">User</span></h1>
+                    <p style="color: #94A3B8; margin-top: 0.25rem;">Your financial world is synced and secure.</p>
+                </div>
+            </div>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <!-- Notification Bell -->
+                <div class="notif-bell" id="notifBell" onclick="toggleNotifPanel()">
+                    🔔
+                    <span class="notif-badge hidden" id="notifBadge">0</span>
+                </div>
+                <button id="syncBtn" class="btn-creative" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">Update Data</button>
+                <a href="/views/expenses.html" class="btn-creative btn-primary-creative" style="text-decoration: none;">+ Add Bill</a>
+            </div>
+        </header>
+
+        <!-- Stats -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 4rem;">
+            <div class="glass-card st-card">
+                <p style="color: #94A3B8; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;">Total Balance</p>
+                <h2 style="font-size: 3rem; font-weight: 800; margin: 0.5rem 0;" id="totalBalance">₹4,52,200</h2>
+                <div style="color: #10B981; font-weight: 700; font-size: 0.9rem;">+5% this month</div>
+            </div>
+            <div class="glass-card st-card">
+                <p style="color: #94A3B8; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;">Recent Expenses</p>
+                <h2 style="font-size: 3rem; font-weight: 800; margin: 0.5rem 0;" id="spentToday">₹0</h2>
+                <div style="color: #F43F5E; font-weight: 700; font-size: 0.9rem;">Cached in local storage</div>
+            </div>
+            <div class="glass-card st-card">
+                <p style="color: #94A3B8; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;">Transactions</p>
+                <h2 style="font-size: 3rem; font-weight: 800; margin: 0.5rem 0;" id="transCount">0</h2>
+                <div style="color: #06B6D4; font-weight: 700; font-size: 0.9rem;">Synced</div>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 3fr 2fr; gap: 2rem;">
+            <div class="glass-card" style="padding: 2.5rem; position: relative; overflow: hidden;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
+                    <div>
+                        <h3 id="chartTitle" style="font-weight: 800; margin: 0;">Monthly Spending</h3>
+                        <div id="drilldownBreadcrumb" style="display: flex; gap: 0.5rem; margin-top: 0.5rem; font-size: 0.75rem; color: #94A3B8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+                            <span style="color: #6366F1;">Yearly View</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 0.75rem; align-items: center;">
+                        <button id="chartBackBtn" class="btn-creative" style="padding: 0.5rem 0.8rem; font-size: 0.7rem; background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: white; display: none;" onclick="navigateUp()">← Back</button>
+                        <select id="yearSwitcher" class="btn-creative" style="padding: 0.5rem 1rem; font-size: 0.75rem; background: rgba(99, 102, 241, 0.1); color: #818CF8; border-color: rgba(99, 102, 241, 0.2); outline: none;" onchange="handleYearChange()">
+                            <option value="2026">2026</option>
+                            <option value="2025">2025</option>
+                            <option value="2024">2024</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="chartContainer" style="height: 300px; width: 100%;">
+                    <canvas id="spendingChart"></canvas>
+                </div>
+
+                <!-- Daily Detail List (Hidden by default, shown during Level 4 drill-down) -->
+                <div id="dayDetailList" style="display: none; margin-top: 1rem; max-height: 250px; overflow-y: auto;">
+                    <!-- Dynamic categories and expenses -->
+                </div>
+            </div>
+            <div class="glass-card" style="padding: 2.5rem;">
+                <h3 style="font-weight: 800; margin-bottom: 2.5rem;">Quick View</h3>
+                <div id="quickActivity" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <!-- Content from localStorage -->
+                </div>
+                <button class="btn-creative w-full" style="margin-top: 3rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); color: white;" onclick="window.location='/views/expenses.html'">View All</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Notification Overlay -->
+    <div class="notif-overlay" id="notifOverlay" onclick="toggleNotifPanel()"></div>
+
+    <!-- Notification Panel -->
+    <div class="notif-panel" id="notifPanel">
+        <div class="notif-panel-header">
+            <div>
+                <h3 style="margin: 0; font-weight: 800; font-size: 1.1rem;">🔔 Notifications</h3>
+                <p style="margin: 4px 0 0; color: #64748B; font-size: 0.75rem;" id="notifSubtitle">No new notifications</p>
+            </div>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <button class="mark-all-btn" onclick="markAllRead()">✓ Mark All Read</button>
+                <button style="background: transparent; border: none; color: #94A3B8; font-size: 1.5rem; cursor: pointer; padding: 0.25rem;" onclick="toggleNotifPanel()">✕</button>
+            </div>
+        </div>
+        <div class="notif-panel-body" id="notifList">
+            <div style="text-align: center; padding: 4rem 1rem; color: #475569;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🔕</div>
+                <p style="font-weight: 600;">No notifications yet</p>
+                <p style="font-size: 0.8rem; color: #334155;">Your alerts will appear here</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let notificationsData = [];
+        let spendingChart = null;
+        let currentLevel = 'year'; // year, month, week, day
+        let selectedYear = new Date().getFullYear();
+        let selectedMonth = null; // 0-11
+        let selectedWeek = null; // range string or index
+        let selectedDay = null; // Date string
+
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+        window.addEventListener('load', () => {
+            const loggedInUser = JSON.parse(localStorage.getItem('fintech_logged_in_user'));
+            const userName = loggedInUser ? (loggedInUser.fullName || loggedInUser.name) || 'User' : 'User';
+            document.getElementById('welcomeName').textContent = userName;
+            
+            // Avatar Logic
+            const avatar = document.getElementById('headerAvatar');
+            const savedPhoto = localStorage.getItem('fintech_profile_pic');
+            const userInitial = (userName.charAt(0) || 'U').toUpperCase();
+
+            if (savedPhoto && savedPhoto.startsWith('data:image')) {
+                avatar.style.backgroundImage = `url(${savedPhoto})`;
+                avatar.textContent = '';
+            } else {
+                avatar.textContent = userInitial;
+            }
+
+            // RBAC
+            const userRole = (loggedInUser && loggedInUser.role) ? loggedInUser.role.toLowerCase() : '';
+            const adminLink = document.getElementById('adminNavItem');
+            if (adminLink) {
+                if (userRole === 'administrator' || userRole === 'admin') {
+                    adminLink.style.display = 'flex';
+                } else {
+                    adminLink.style.display = 'none';
+                }
+            }
+            
+            // Initialize Dashboard Data
+            initDashboard();
+            fetchNotifications();
+        });
+
+        function initDashboard() {
+            updateGlobalStats();
+            renderSpendingChart();
+            renderQuickView();
+        }
+
+        function updateGlobalStats() {
+            const balance = parseFloat(localStorage.getItem('fintech_balance')) || 452200;
+            const expenses = JSON.parse(localStorage.getItem('fintech_expenses')) || [];
+            
+            // Filter expenses for current year
+            const yearExpenses = expenses.filter(e => new Date(e.date).getFullYear() === parseInt(selectedYear));
+            const totalSpent = yearExpenses.reduce((acc, exp) => acc + exp.amount, 0);
+            
+            document.getElementById('totalBalance').textContent = '₹' + balance.toLocaleString('en-IN');
+            document.getElementById('spentToday').textContent = '₹' + totalSpent.toLocaleString('en-IN');
+            document.getElementById('transCount').textContent = yearExpenses.length;
+        }
+
+        function renderQuickView() {
+            const activityBox = document.getElementById('quickActivity');
+            const expenses = JSON.parse(localStorage.getItem('fintech_expenses')) || [];
+            activityBox.innerHTML = '';
+            
+            if(expenses.length === 0) {
+                activityBox.innerHTML = '<p style="color: #94A3B8; text-align: center;">No recent transactions.</p>';
+            } else {
+                expenses.slice(0, 3).forEach(exp => {
+                    const row = `
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; gap: 0.75rem; align-items: center;">
+                                <div style="width: 32px; height: 32px; background: rgba(255,255,255,0.05); border-radius: 8px; display: flex; align-items: center; justify-content: center;">💼</div>
+                                <div>
+                                    <p style="font-weight: 700; margin: 0; font-size: 0.9rem;">${exp.merchant}</p>
+                                    <p style="font-size: 0.75rem; color: #64748B; margin: 0;">${exp.category}</p>
+                                </div>
+                            </div>
+                            <span style="font-weight: 800; color: #F43F5E;">-₹${exp.amount.toLocaleString('en-IN')}</span>
+                        </div>
+                    `;
+                    activityBox.insertAdjacentHTML('beforeend', row);
+                });
+            }
+        }
+
+        // --- Chart & Drill-down Logic ---
+
+        function handleYearChange() {
+            selectedYear = document.getElementById('yearSwitcher').value;
+            currentLevel = 'year';
+            selectedMonth = null;
+            selectedWeek = null;
+            selectedDay = null;
+            updateGlobalStats();
+            renderSpendingChart();
+        }
+
+        function navigateUp() {
+            if (currentLevel === 'month') currentLevel = 'year';
+            else if (currentLevel === 'week') currentLevel = 'month';
+            else if (currentLevel === 'day') currentLevel = 'week';
+            
+            renderSpendingChart();
+        }
+
+        function getWeeksInMonth(year, month) {
+            const weeks = [];
+            const firstDate = new Date(year, month, 1);
+            const lastDate = new Date(year, month + 1, 0);
+            
+            let start = new Date(firstDate);
+            // Move to previous Sunday
+            start.setDate(start.getDate() - start.getDay());
+            
+            while (start <= lastDate) {
+                let end = new Date(start);
+                end.setDate(end.getDate() + 6);
+                weeks.push({
+                    start: new Date(start),
+                    end: new Date(end),
+                    label: `${start.toLocaleDateString('en-IN', {day:'2-digit', month:'short'})} - ${end.toLocaleDateString('en-IN', {day:'2-digit', month:'short'})}`
+                });
+                start.setDate(start.getDate() + 7);
+            }
+            return weeks;
+        }
+
+        function renderSpendingChart() {
+            const ctx = document.getElementById('spendingChart').getContext('2d');
+            const expenses = JSON.parse(localStorage.getItem('fintech_expenses')) || [];
+            const backBtn = document.getElementById('chartBackBtn');
+            const breadcrumb = document.getElementById('drilldownBreadcrumb');
+            const chartTitle = document.getElementById('chartTitle');
+            const dayDetail = document.getElementById('dayDetailList');
+            const chartCanvas = document.getElementById('spendingChart');
+
+            // Reset UI
+            backBtn.style.display = currentLevel === 'year' ? 'none' : 'block';
+            dayDetail.style.display = 'none';
+            chartCanvas.style.display = 'block';
+
+            let labels = [];
+            let data = [];
+            let title = "Monthly Spending";
+            let breadcrumbHTML = `<span style="color: #6366F1; cursor: pointer;" onclick="resetToYear()">Yearly View (${selectedYear})</span>`;
+
+            if (currentLevel === 'year') {
+                title = "Monthly Spending";
+                labels = monthNames;
+                data = monthNames.map((m, idx) => {
+                    return expenses.filter(e => {
+                        const d = new Date(e.date);
+                        return d.getFullYear() === parseInt(selectedYear) && d.getMonth() === idx;
+                    }).reduce((sum, e) => sum + e.amount, 0);
+                });
+            } 
+            else if (currentLevel === 'month') {
+                title = `${monthNames[selectedMonth]} Spending`;
+                breadcrumbHTML += ` <span style="color: rgba(255,255,255,0.3);">/</span> <span style="color: #D946EF;">${monthNames[selectedMonth]}</span>`;
+                const weeks = getWeeksInMonth(selectedYear, selectedMonth);
+                labels = weeks.map(w => w.label);
+                data = weeks.map(w => {
+                    return expenses.filter(e => {
+                        const d = new Date(e.date);
+                        return d >= w.start && d <= w.end;
+                    }).reduce((sum, e) => sum + e.amount, 0);
+                });
+            }
+            else if (currentLevel === 'week') {
+                const weeks = getWeeksInMonth(selectedYear, selectedMonth);
+                const weekObj = weeks[selectedWeek];
+                title = `Weekly Spending (${weekObj.label})`;
+                breadcrumbHTML += ` <span style="color: rgba(255,255,255,0.3);">/</span> <span style="color: #D946EF;">${monthNames[selectedMonth]}</span> <span style="color: rgba(255,255,255,0.3);">/</span> <span style="color: #06B6D4;">Week ${parseInt(selectedWeek)+1}</span>`;
+                
+                labels = dayNames;
+                data = dayNames.map((dName, idx) => {
+                    return expenses.filter(e => {
+                        const d = new Date(e.date);
+                        return d >= weekObj.start && d <= weekObj.end && d.getDay() === idx;
+                    }).reduce((sum, e) => sum + e.amount, 0);
+                });
+            }
+            else if (currentLevel === 'day') {
+                const d = new Date(selectedDay);
+                const dayStr = d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' });
+                title = `Categories: ${dayStr} expenses`; 
+                breadcrumbHTML += ` <span style="color: rgba(255,255,255,0.3);">/</span> <span style="color: #D946EF;">${monthNames[selectedMonth]}</span> <span style="color: rgba(255,255,255,0.3);">/</span> <span style="color: #06B6D4;">${dayNames[d.getDay()]}</span>`;
+                
+                chartCanvas.style.display = 'none';
+                dayDetail.style.display = 'block';
+                renderDayDetails(selectedDay);
+            }
+
+            chartTitle.textContent = title;
+            breadcrumb.innerHTML = breadcrumbHTML;
+
+            if (currentLevel !== 'day') {
+                if (spendingChart) spendingChart.destroy();
+                spendingChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: data,
+                            backgroundColor: currentLevel === 'year' ? '#6366F1' : (currentLevel === 'month' ? '#D946EF' : '#06B6D4'),
+                            borderRadius: 8,
+                            hoverBackgroundColor: '#8B5CF6'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { display: false, beginAtZero: true },
+                            x: { 
+                                ticks: { color: '#94A3B8', font: { family: 'Outfit', weight: 600 } },
+                                grid: { display: false }
+                            }
+                        },
+                        onClick: (e, items) => {
+                            if (items.length > 0) handleChartClick(items[0].index);
+                        }
+                    }
+                });
+            }
+        }
+
+        function handleChartClick(index) {
+            if (currentLevel === 'year') {
+                selectedMonth = index;
+                currentLevel = 'month';
+            } else if (currentLevel === 'month') {
+                selectedWeek = index;
+                currentLevel = 'week';
+            } else if (currentLevel === 'week') {
+                // Find actual date for this day in this week
+                const weeks = getWeeksInMonth(selectedYear, selectedMonth);
+                const weekObj = weeks[selectedWeek];
+                const dayDate = new Date(weekObj.start);
+                dayDate.setDate(dayDate.getDate() + index);
+                selectedDay = dayDate.toISOString().split('T')[0];
+                currentLevel = 'day';
+            }
+            renderSpendingChart();
+        }
+
+        function renderDayDetails(dateStr) {
+            const list = document.getElementById('dayDetailList');
+            const expenses = JSON.parse(localStorage.getItem('fintech_expenses')) || [];
+            const dayExp = expenses.filter(e => e.date === dateStr);
+            
+            if (dayExp.length === 0) {
+                list.innerHTML = '<p style="text-align: center; color: #94A3B8; padding: 2rem;">No expenses recorded for this day.</p>';
+                return;
+            }
+
+            // Group by category
+            const categories = {};
+            dayExp.forEach(e => {
+                if (!categories[e.category]) categories[e.category] = [];
+                categories[e.category].push(e);
+            });
+
+            list.innerHTML = Object.keys(categories).map(cat => `
+                <div style="margin-bottom: 1.5rem;">
+                    <h4 style="font-size: 0.75rem; color: #6366F1; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem;">${cat}</h4>
+                    ${categories[cat].map(e => `
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; margin-bottom: 0.5rem;">
+                            <span style="font-weight: 600; font-size: 0.9rem;">${e.merchant}</span>
+                            <span style="font-weight: 800; color: #F43F5E;">-₹${e.amount.toLocaleString('en-IN')}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `).join('');
+        }
+
+        function resetToYear() {
+            currentLevel = 'year';
+            selectedMonth = null;
+            selectedWeek = null;
+            selectedDay = null;
+            renderSpendingChart();
+        }
+
+        document.getElementById('syncBtn').addEventListener('click', function() {
+            this.textContent = 'Syncing...';
+            setTimeout(() => {
+                location.reload();
+            }, 500);
+        });
+
+        // === NOTIFICATION FUNCTIONS ===
+        function toggleNotifPanel() {
+            const panel = document.getElementById('notifPanel');
+            const overlay = document.getElementById('notifOverlay');
+            panel.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        async function fetchNotifications() {
+            try {
+                const token = localStorage.getItem('fintech_token');
+                if (!token) return;
+
+                const response = await fetch('/api/notifications?limit=30', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) return;
+
+                const result = await response.json();
+                if (result.success) {
+                    notificationsData = result.data;
+                    renderNotifications(result.data, result.unreadCount);
+                }
+            } catch (err) {
+                console.log('Notification fetch skipped:', err.message);
+            }
+        }
+
+        function renderNotifications(notifications, unreadCount) {
+            const badge = document.getElementById('notifBadge');
+            const subtitle = document.getElementById('notifSubtitle');
+            const list = document.getElementById('notifList');
+
+            // Update badge
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+                badge.classList.remove('hidden');
+                subtitle.textContent = `${unreadCount} unread notification${unreadCount > 1 ? 's' : ''}`;
+            } else {
+                badge.classList.add('hidden');
+                subtitle.textContent = 'All caught up!';
+            }
+
+            if (notifications.length === 0) {
+                list.innerHTML = `
+                    <div style="text-align: center; padding: 4rem 1rem; color: #475569;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🔕</div>
+                        <p style="font-weight: 600;">No notifications yet</p>
+                        <p style="font-size: 0.8rem; color: #334155;">Your alerts will appear here</p>
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = '';
+            notifications.forEach(notif => {
+                const timeAgo = getTimeAgo(new Date(notif.createdAt));
+                const iconClass = notif.type === 'login_alert' ? 'login' :
+                                  notif.type === 'account_created' ? 'account' :
+                                  notif.type === 'transaction' ? 'transaction' : 'system';
+                
+                const item = document.createElement('div');
+                item.className = `notif-item ${notif.isRead ? '' : 'unread'}`;
+                item.onclick = () => markAsRead(notif._id, item);
+                item.innerHTML = `
+                    <div class="notif-icon ${iconClass}">${notif.icon || '🔔'}</div>
+                    <div style="flex: 1; min-width: 0;">
+                        <p style="margin: 0; font-weight: 700; font-size: 0.85rem; color: #E2E8F0;">${notif.title}</p>
+                        <p style="margin: 4px 0 0; font-size: 0.78rem; color: #94A3B8; line-height: 1.4;">${notif.message}</p>
+                        <p style="margin: 6px 0 0; font-size: 0.65rem; color: #475569; font-weight: 600;">${timeAgo}${notif.emailSent ? ' · 📧 Email sent' : ''}</p>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        async function markAsRead(id, element) {
+            try {
+                const token = localStorage.getItem('fintech_token');
+                await fetch(`/api/notifications/${id}/read`, {
+                    method: 'PATCH',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (element) element.classList.remove('unread');
+                fetchNotifications(); // Refresh count
+            } catch (err) {
+                console.log('Mark read failed:', err.message);
+            }
+        }
+
+        async function markAllRead() {
+            try {
+                const token = localStorage.getItem('fintech_token');
+                await fetch('/api/notifications/read-all', {
+                    method: 'PATCH',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                fetchNotifications();
+            } catch (err) {
+                console.log('Mark all read failed:', err.message);
+            }
+        }
+
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            if (seconds < 60) return 'Just now';
+            if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+            if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
+            return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+        }
+    </script>
+</body>
+</html>
+

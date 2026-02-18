@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports | FintechPro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <style>
+        .report-header {
+            background: var(--gradient-secondary);
+            color: white;
+            padding: var(--spacing-12);
+            border-radius: var(--radius-xl);
+            margin-bottom: var(--spacing-10);
+            box-shadow: 0 10px 40px -5px rgba(6, 182, 212, 0.3);
+        }
+        .chart-mock {
+            height: 300px;
+            background: rgba(255, 255, 255, 0.4);
+            border: 2px dashed rgba(6, 182, 212, 0.2);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .bar {
+            width: 40px;
+            border-radius: 8px 8px 0 0;
+            transition: height 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-shell">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="flex items-center gap-3">
+                    <div style="width: 32px; height: 32px; background: var(--gradient-primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.75rem;">FP</div>
+                    <span class="font-bold text-xl">FintechPro</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/views/dashboard.html" class="nav-item">
+                    <span>🏠</span> <span>Dashboard</span>
+                </a>
+                <a href="/views/expenses.html" class="nav-item">
+                    <span>📉</span> <span>Expenses</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span>📈</span> <span>Income</span>
+                </a>
+                <a href="/views/reports.html" class="nav-item active">
+                    <span>📊</span> <span>Reports</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span>⚙️</span> <span>Settings</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="/views/login.html" class="nav-item">
+                    <span>🚪</span> <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="report-header">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h1 class="text-4xl font-bold mb-3">Enterprise Insights</h1>
+                        <p class="text-lg" style="opacity: 0.9;">Visualize your organizational spending velocity.</p>
+                    </div>
+                    <button class="btn btn-primary" style="background: white; color: var(--color-secondary);">Download PDF Audit</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <div class="card">
+                    <h3 class="font-bold text-xl mb-10">Revenue vs Expenditure</h3>
+                    <div class="chart-mock flex items-baseline gap-6 px-10">
+                        <div class="bar" style="height: 60%; background: var(--gradient-primary);"></div>
+                        <div class="bar" style="height: 40%; background: var(--gradient-secondary);"></div>
+                        <div class="bar" style="height: 85%; background: var(--gradient-primary);"></div>
+                        <div class="bar" style="height: 30%; background: var(--gradient-secondary);"></div>
+                        <div class="bar" style="height: 70%; background: var(--gradient-primary);"></div>
+                        <div class="bar" style="height: 50%; background: var(--gradient-secondary);"></div>
+                    </div>
+                    <div class="flex justify-center gap-10 mt-8">
+                        <div class="flex items-center gap-2"><div style="width: 12px; height: 12px; border-radius: 3px; background: var(--color-primary);"></div><span class="text-sm font-bold">Revenue</span></div>
+                        <div class="flex items-center gap-2"><div style="width: 12px; height: 12px; border-radius: 3px; background: var(--color-secondary);"></div><span class="text-sm font-bold">Expenses</span></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="font-bold text-xl mb-10">Category Velocity</h3>
+                    <div class="chart-mock">
+                        <div style="width: 200px; height: 200px; border-radius: 50%; background: conic-gradient(var(--color-primary) 0% 50%, var(--color-secondary) 50% 80%, var(--color-accent) 80% 100%); display: flex; align-items: center; justify-content: center; position: relative;">
+                            <div style="width: 140px; height: 140px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.5rem; color: var(--color-navy);">$3.7k</div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4 mt-8">
+                        <div class="text-center"><p class="text-xs text-slate-500 font-bold">SOFTWARE</p><h4 class="font-bold">50%</h4></div>
+                        <div class="text-center"><p class="text-xs text-slate-500 font-bold">TRAVEL</p><h4 class="font-bold">30%</h4></div>
+                        <div class="text-center"><p class="text-xs text-slate-500 font-bold">OTHER</p><h4 class="font-bold">20%</h4></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

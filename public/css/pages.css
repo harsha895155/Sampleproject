@@ -1,0 +1,76 @@
+@import url('variables.css');
+
+.hero {
+    padding: var(--spacing-16) 0;
+    position: relative;
+    background: white;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+    z-index: 0;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    bottom: -200px;
+    left: -200px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 70%);
+    z-index: 0;
+}
+
+.hero-title {
+    font-family: var(--font-display);
+    font-size: var(--text-size-4xl);
+    font-weight: 800;
+    line-height: 1.1;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: var(--spacing-6);
+}
+
+.hero-subtitle {
+    font-size: var(--text-size-lg);
+    color: var(--color-slate-600);
+    margin-bottom: var(--spacing-8);
+}
+
+.hero-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-xl);
+    box-shadow: 0 40px 100px -20px rgba(0,0,0,0.2);
+    transform: perspective(1000px) rotateY(-10deg) rotateX(5deg);
+}
+
+/* Feature Icon Variations */
+.feature-icon-1 { background: var(--gradient-primary); color: white; }
+.feature-icon-2 { background: var(--gradient-secondary); color: white; }
+.feature-icon-3 { background: var(--gradient-accent); color: white; }
+
+/* Gradient Sections */
+.section-cta {
+    background: var(--gradient-primary);
+    color: white;
+    position: relative;
+}
+
+.section-cta::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('https://www.transparenttextures.com/patterns/cubes.png');
+    opacity: 0.1;
+    pointer-events: none;
+}

@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Hub | FintechPro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <script src="/js/theme.js"></script>
+    <style>
+        body.creative-mode { font-family: 'Outfit', sans-serif; margin: 0; }
+        
+        .sidebar {
+            width: 260px;
+            background: rgba(255,255,255,0.02);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255,255,255,0.08);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1.25rem;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 10;
+        }
+
+        .nav-item {
+            width: 100%;
+            height: 54px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0 1.25rem;
+            margin-bottom: 0.75rem;
+            color: #94A3B8;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            gap: 1rem;
+            box-sizing: border-box;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: linear-gradient(135deg, #6366F1, #8B5CF6, #D946EF);
+            color: white;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
+            transform: translateX(5px);
+        }
+
+        .content {
+            margin-left: 260px;
+            padding: 4rem;
+            min-height: 100vh;
+            background: var(--mesh-gradient);
+        }
+
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 2.5rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+
+        .glass-field {
+            margin-bottom: 1.5rem;
+        }
+
+        .glass-field label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+            color: #6366F1;
+            margin-bottom: 0.75rem;
+        }
+
+        .glass-input {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .glass-input:focus {
+            outline: none;
+            border-color: #6366F1;
+            background: rgba(255,255,255,0.05);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .glass-input:read-only {
+            cursor: not-allowed;
+            opacity: 0.7;
+            background: rgba(255,255,255,0.01);
+        }
+
+        /* Custom Select Dropdown Styling */
+        select.glass-input {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236366F1' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+            cursor: pointer;
+        }
+
+        select.glass-input option {
+            background: var(--color-dark-bg);
+            color: var(--text-primary);
+            padding: 0.75rem 1rem;
+            border: none;
+        }
+
+        select.glass-input option:hover,
+        select.glass-input option:focus,
+        select.glass-input option:checked {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+            color: #6366F1;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .action-bar {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 4rem;
+            left: calc(260px + 4rem);
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 50;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .badge-administrator { background: rgba(244, 63, 94, 0.1); color: #F43F5E; }
+        .badge-business { background: rgba(99, 102, 241, 0.1); color: #6366F1; }
+        .badge-organization { background: rgba(16, 185, 129, 0.1); color: #10B981; }
+
+        #avatarCircle {
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, #6366F1, #8B5CF6);
+            border-radius: 30px;
+            margin: 0 auto 2rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            font-weight: 800;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            border: 4px solid rgba(255,255,255,0.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body class="creative-mode">
+    <div class="sidebar">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 4.5rem; padding-left: 0.5rem;">
+            <div style="width: 42px; height: 42px; background: linear-gradient(135deg, #6366F1, #D946EF); border-radius: 12px; transform: rotate(45deg); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);">
+                <span style="transform: rotate(-45deg); color: white; font-weight: 900; font-size: 1.2rem;">F</span>
+            </div>
+            <span style="font-weight: 900; font-size: 1.5rem; letter-spacing: -0.04em;">FINTECH<span style="color: #6366F1;">PRO</span></span>
+        </div>
+        
+        <a href="/views/dashboard.html" class="nav-item">
+            <span style="font-size: 1.25rem;">🏠</span>
+            <span>Dashboard</span>
+        </a>
+        <a href="/views/expenses.html" class="nav-item">
+            <span style="font-size: 1.25rem;">💸</span>
+            <span>Expenses</span>
+        </a>
+        <a href="/views/transactions.html" class="nav-item">
+            <span style="font-size: 1.25rem;">📋</span>
+            <span>Transactions</span>
+        </a>
+        <a href="/views/reports.html" class="nav-item">
+            <span style="font-size: 1.25rem;">📊</span>
+            <span>Reports</span>
+        </a>
+        <a href="/views/admin.html" id="adminNavItem" class="nav-item">
+            <span style="font-size: 1.25rem;">👤</span>
+            <span>Admin</span>
+        </a>
+        <a href="/views/profile.html" class="nav-item active">
+            <span style="font-size: 1.25rem;">👤</span>
+            <span>Profile</span>
+        </a>
+        <a href="/views/settings.html" class="nav-item">
+            <span style="font-size: 1.25rem;">⚙️</span>
+            <span>Settings</span>
+        </a>
+        <a href="/views/support.html" class="nav-item">
+            <span style="font-size: 1.25rem;">🎧</span>
+            <span>Support</span>
+        </a>
+        
+        <div style="flex: 1;"></div>
+        
+        <a href="/index.html" class="nav-item" style="margin-bottom: 0;">
+            <span style="font-size: 1.25rem;">🚪</span>
+            <span>Logout</span>
+        </a>
+    </div>
+
+    <main class="content">
+        <header style="margin-bottom: 5rem;">
+            <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1rem;">
+                <h1 style="font-size: 3.5rem; font-weight: 900; margin: 0; letter-spacing: -0.05em;">My <span style="background: linear-gradient(to right, #6366F1, #D946EF); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Profile</span></h1>
+                <span id="roleBadge" class="badge badge-administrator">Administrator</span>
+            </div>
+            <p style="color: var(--text-secondary); font-size: 1.1rem; font-weight: 500;">Who you are within the FintechPro ecosystem.</p>
+        </header>
+
+        <form id="masterProfileForm">
+            <div class="profile-layout">
+                <div style="display: flex; flex-direction: column; gap: 4rem;">
+                    <!-- 1. Personal Information -->
+                    <section>
+                        <div class="section-header">
+                            <span style="font-size: 1.5rem;">🧑</span>
+                            <h2>Personal Information</h2>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                            <div class="glass-field">
+                                <label>Full Name</label>
+                                <input type="text" id="fullName" class="glass-input" placeholder="e.g. Harsha V">
+                            </div>
+                            <div class="glass-field">
+                                <label>Email Address</label>
+                                <input type="email" id="emailAdd" class="glass-input" placeholder="e.g. harsha@example.com">
+                            </div>
+                            <div class="glass-field">
+                                <label>Phone Number</label>
+                                <input type="tel" id="phoneNumber" class="glass-input" placeholder="+91 98765 43210">
+                            </div>
+                            <div class="glass-field">
+                                <label>Company Name</label>
+                                <input type="text" id="companyName" class="glass-input" placeholder="e.g. FintechPro Global">
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 2. Professional Details -->
+                    <section>
+                        <div class="section-header">
+                            <span style="font-size: 1.5rem;">🏢</span>
+                            <h2>Professional Details</h2>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                            <div class="glass-field">
+                                <label>Employee ID</label>
+                                <input type="text" id="empId" class="glass-input" placeholder="e.g. FP-8829">
+                            </div>
+                            <div class="glass-field">
+                                <label>Department</label>
+                                <input type="text" id="dept" class="glass-input" placeholder="e.g. Engineering">
+                            </div>
+                            <div class="glass-field">
+                                <label>Designation</label>
+                                <input type="text" id="desig" class="glass-input" placeholder="e.g. Senior Architect">
+                            </div>
+                            <div class="glass-field">
+                                <label>Manager Name</label>
+                                <input type="text" id="managerName" class="glass-input" placeholder="e.g. Alex Rivera">
+                            </div>
+                            <div class="glass-field" style="grid-column: span 2;">
+                                <label>Joining Date</label>
+                                <input type="date" id="joinDate" class="glass-input">
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 3. Financial Preferences -->
+                    <section style="margin-bottom: 8rem;">
+                        <div class="section-header">
+                            <span style="font-size: 1.5rem;">💳</span>
+                            <h2>Financial Preferences</h2>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                            <div class="glass-field">
+                                <label>Default Currency</label>
+                                <select id="prefCurrency" class="glass-input" style="appearance: none;">
+                                    <option value="INR">INR (₹)</option>
+                                    <option value="USD">USD ($)</option>
+                                    <option value="EUR">EUR (€)</option>
+                                </select>
+                            </div>
+                            <div class="glass-field">
+                                <label>Preferred Payment Mode</label>
+                                <select id="prefPayment" class="glass-input" style="appearance: none;">
+                                    <option>UPI</option>
+                                    <option>Credit Card</option>
+                                    <option>Bank Transfer</option>
+                                    <option>Cash</option>
+                                </select>
+                            </div>
+                            <div class="glass-field" style="grid-column: span 2;">
+                                <label>Preferred Expense Categories</label>
+                                <input type="text" id="prefCats" class="glass-input" placeholder="e.g. Tech, Travel, Dining">
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 2.5rem;">
+                    <!-- Avatar Sidebar -->
+                    <div class="glass-card" style="padding: 3rem; text-align: center; position: sticky; top: 4rem;">
+                        <div id="avatarCircle">U</div>
+                        <h3 id="sideName" style="font-weight: 800; margin: 0; font-size: 1.5rem;">User Name</h3>
+                        <p id="sideRole" style="color: var(--text-secondary); font-size: 0.9rem; margin: 0.5rem 0 2.5rem 0;">Lead Architect</p>
+                        
+                        <input type="file" id="photoInput" accept="image/*" style="display: none;">
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <button type="button" class="btn-creative w-full" style="background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); color: #6366F1;" onclick="document.getElementById('photoInput').click()">Upload Photo</button>
+                            <button type="button" class="btn-creative w-full" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); color: white;" onclick="alert('Change Password feature pending server integration.')">Change Password</button>
+                        </div>
+
+                        <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.05); margin: 2.5rem 0;">
+
+                        <!-- 4. Account Summary (Read-Only) -->
+                        <div style="text-align: left;">
+                            <h4 style="font-size: 0.75rem; font-weight: 800; color: #64748B; text-transform: uppercase; margin-bottom: 1.5rem;">Account Summary</h4>
+                            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #64748B; font-size: 0.85rem;">Created</span>
+                                    <span id="createdDate" style="font-weight: 700; font-size: 0.85rem;">Oct 2024</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #64748B; font-size: 0.85rem;">Total Expenses</span>
+                                    <span id="sumExpenses" style="font-weight: 700; font-size: 0.85rem;">₹4.2L</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #64748B; font-size: 0.85rem;">Approval Rate</span>
+                                    <span style="font-weight: 700; font-size: 0.85rem; color: #10B981;">98.2%</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #64748B; font-size: 0.85rem;">Last Login</span>
+                                    <span id="lastLogin" style="font-weight: 700; font-size: 0.85rem;">Today, 10:45 AM</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.05); margin: 2.5rem 0;">
+
+                        <!-- 5. Security Info (Read-Only) -->
+                        <div style="text-align: left;">
+                            <h4 style="font-size: 0.75rem; font-weight: 800; color: #64748B; text-transform: uppercase; margin-bottom: 1.5rem;">Security Integrity</h4>
+                            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <div style="width: 8px; height: 8px; background: #10B981; border-radius: 50%;"></div>
+                                    <span style="font-size: 0.85rem; font-weight: 600;">2 Active Sessions</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <div style="width: 8px; height: 8px; background: #10B981; border-radius: 50%;"></div>
+                                    <span style="font-size: 0.85rem; font-weight: 600;">Windows Desktop (Current)</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <div style="width: 8px; height: 8px; background: #64748B; border-radius: 50%;"></div>
+                                    <span style="font-size: 0.85rem; color: #64748B;">Last Password Change: 42 days ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Action Bar -->
+            <div class="action-bar">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <span style="color: #94A3B8; font-size: 0.8rem;">You have unsaved changes in your profile.</span>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button type="button" class="btn-creative" style="background: transparent; border: none; color: #94A3B8; font-size: 0.85rem; padding: 0.5rem 1rem;" onclick="location.reload()">Discard Changes</button>
+                    <button type="submit" class="btn-creative btn-primary-creative" style="padding: 0.5rem 1.5rem; font-size: 0.85rem;">Update Profile</button>
+                    <button type="button" class="btn-creative" style="background: #F43F5E; color: white; border: none; font-size: 0.85rem; padding: 0.5rem 1rem;" onclick="window.location='/views/login.html'">Logout</button>
+                </div>
+            </div>
+        </form>
+    </main>
+
+    <script>
+        // Data Sync Logic
+        window.addEventListener('load', () => {
+            const loggedInUser = JSON.parse(localStorage.getItem('fintech_logged_in_user'));
+            const userName = loggedInUser ? (loggedInUser.fullName || loggedInUser.name) || 'User' : 'User';
+            const userRole = (loggedInUser && loggedInUser.role) ? loggedInUser.role.toLowerCase() : '';
+
+            // RBAC Logic
+            const adminLink = document.getElementById('adminNavItem');
+            if (adminLink) {
+                if (userRole === 'administrator') {
+                    adminLink.style.display = 'flex';
+                } else {
+                    adminLink.style.display = 'none';
+                }
+            }
+
+            // Populate Fields
+            document.getElementById('fullName').value = userName;
+            document.getElementById('emailAdd').value = loggedInUser.email || '';
+            document.getElementById('sideName').textContent = userName;
+            
+            const badge = document.getElementById('roleBadge');
+            const displayRole = loggedInUser.role || 'User';
+            badge.textContent = displayRole;
+            badge.className = `badge badge-${userRole}`;
+            document.getElementById('sideRole').textContent = displayRole;
+
+            // Load Extended Profile Data
+            const profileData = JSON.parse(localStorage.getItem(`fintech_profile_${loggedInUser.email}`)) || {};
+            document.getElementById('phoneNumber').value = profileData.phone || '';
+            document.getElementById('companyName').value = profileData.company || 'FintechPro Inc';
+            document.getElementById('empId').value = profileData.empId || `FP-${Math.floor(1000 + Math.random() * 9000)}`;
+            document.getElementById('dept').value = profileData.dept || 'Engineering';
+            document.getElementById('desig').value = profileData.desig || 'Software Architect';
+            document.getElementById('managerName').value = profileData.manager || 'Alex Rivera';
+            document.getElementById('joinDate').value = profileData.joinDate || '2024-01-15';
+            document.getElementById('prefCurrency').value = profileData.currency || 'INR';
+            document.getElementById('prefPayment').value = profileData.payment || 'UPI';
+            document.getElementById('prefCats').value = profileData.categories || 'Technology, Travel, Food';
+
+            // Stats Simulation
+            document.getElementById('createdDate').textContent = profileData.created || 'January 2024';
+            const bal = localStorage.getItem('fintech_balance') || '4,52,200';
+            document.getElementById('sumExpenses').textContent = '₹' + parseFloat(bal).toLocaleString('en-IN');
+            document.getElementById('lastLogin').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            // Avatar Load Logic
+            const savedPhoto = localStorage.getItem('fintech_profile_pic') || profileData.photo;
+            const avatar = document.getElementById('avatarCircle');
+            const userInitial = (loggedInUser.name ? loggedInUser.name.charAt(0) : 'U').toUpperCase();
+            
+            if (savedPhoto && savedPhoto.startsWith('data:image')) {
+                avatar.style.backgroundImage = `url(${savedPhoto})`;
+                avatar.textContent = '';
+            } else {
+                avatar.style.backgroundImage = 'none';
+                avatar.textContent = userInitial;
+            }
+        });
+
+        // Photo Upload
+        document.getElementById('photoInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const dataUrl = event.target.result;
+                    localStorage.setItem('fintech_profile_pic', dataUrl);
+                    const avatar = document.getElementById('avatarCircle');
+                    avatar.style.backgroundImage = `url(${dataUrl})`;
+                    avatar.textContent = '';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Master Save
+        document.getElementById('masterProfileForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const loggedInUser = JSON.parse(localStorage.getItem('fintech_logged_in_user'));
+            
+            const updatedData = {
+                phone: document.getElementById('phoneNumber').value,
+                company: document.getElementById('companyName').value,
+                empId: document.getElementById('empId').value,
+                dept: document.getElementById('dept').value,
+                desig: document.getElementById('desig').value,
+                manager: document.getElementById('managerName').value,
+                joinDate: document.getElementById('joinDate').value,
+                currency: document.getElementById('prefCurrency').value,
+                payment: document.getElementById('prefPayment').value,
+                categories: document.getElementById('prefCats').value
+            };
+
+            // Update main user record
+            loggedInUser.name = document.getElementById('fullName').value;
+            loggedInUser.email = document.getElementById('emailAdd').value;
+            localStorage.setItem('fintech_logged_in_user', JSON.stringify(loggedInUser));
+            
+            // Save extended data
+            localStorage.setItem(`fintech_profile_${loggedInUser.email}`, JSON.stringify(updatedData));
+            
+            alert('Profile updated and synchronized globally! ✨🏙️');
+            location.reload();
+        });
+    </script>
+</body>
+</html>

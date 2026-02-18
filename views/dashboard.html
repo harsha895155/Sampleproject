@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nebula Dashboard | FintechPro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <style>
+        body { font-family: 'Outfit', sans-serif; }
+        .sidebar-creative {
+            width: 100px;
+            background: rgba(255,255,255,0.02);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--color-glass-border);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 0;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+        .nav-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .nav-icon:hover, .nav-icon.active {
+            background: var(--aurora-gradient);
+            color: white;
+            box-shadow: var(--glow-primary);
+            transform: scale(1.1);
+        }
+        .main-creative {
+            margin-left: 100px;
+            padding: 3rem;
+        }
+    </style>
+</head>
+<body class="creative-mode">
+    <div class="sidebar-creative">
+        <div style="width: 50px; height: 50px; background: var(--aurora-gradient); border-radius: 12px; transform: rotate(45deg); display: flex; align-items: center; justify-content: center; margin-bottom: 4rem;">
+            <span style="transform: rotate(-45deg); color: white; font-weight: 800;">F</span>
+        </div>
+        <a href="dashboard.html" class="nav-icon active">🏠</a>
+        <a href="expenses.html" class="nav-icon">📉</a>
+        <a href="reports.html" class="nav-icon">📊</a>
+        <a href="#" class="nav-icon">⚙️</a>
+        <div style="flex: 1;"></div>
+        <a href="login.html" class="nav-icon">🚪</a>
+    </div>
+
+    <main class="main-creative">
+        <header class="flex justify-between items-center mb-16">
+            <div>
+                <h1 class="text-4xl font-bold tracking-tight">System <span class="text-gradient-creative">Overview</span></h1>
+                <p class="text-slate-400 mt-2">Welcome to the future of expense control.</p>
+            </div>
+            <div class="flex items-center gap-6">
+                <button class="btn-creative" style="background: rgba(255,255,255,0.05); border: 1px solid var(--color-glass-border); color: white;">Global Sync</button>
+                <a href="expenses.html" class="btn-creative btn-primary-creative">+ New Record</a>
+                <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--aurora-gradient); padding: 2px;">
+                    <div style="width: 100%; height: 100%; border-radius: 50%; background: #000; overflow: hidden;">
+                        <div style="width: 100%; height: 100%; background: radial-gradient(circle, #555, #000);"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-16">
+            <div class="glass-card">
+                <p class="text-slate-400 text-sm font-bold tracking-widest uppercase mb-4">Total Liquidity</p>
+                <h2 class="text-5xl font-extrabold">$124,500.00</h2>
+                <div class="mt-4 flex items-center gap-2 text-success font-bold">
+                    <span>↑ 24%</span>
+                    <span class="text-xs text-slate-500 font-normal">VS LAST QUARTER</span>
+                </div>
+            </div>
+            <div class="glass-card" style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(59, 130, 246, 0.1));">
+                <p class="text-slate-400 text-sm font-bold tracking-widest uppercase mb-4">Monthly Burn Rate</p>
+                <h2 class="text-5xl font-extrabold">$12,200.00</h2>
+                <div class="mt-4 flex items-center gap-2 text-danger font-bold">
+                    <span>↓ 8%</span>
+                    <span class="text-xs text-slate-500 font-normal">OPTIMIZED</span>
+                </div>
+            </div>
+            <div class="glass-card">
+                <p class="text-slate-400 text-sm font-bold tracking-widest uppercase mb-4">Active Assets</p>
+                <div class="flex items-end gap-3">
+                    <h2 class="text-5xl font-extrabold">842</h2>
+                    <span class="text-slate-500 mb-2 font-bold text-sm">RECORDS</span>
+                </div>
+                <div class="mt-4 flex -space-x-3">
+                    <div style="width: 30px; height: 30px; border-radius: 50%; background: #444; border: 2px solid #000;"></div>
+                    <div style="width: 30px; height: 30px; border-radius: 50%; background: #666; border: 2px solid #000;"></div>
+                    <div style="width: 30px; height: 30px; border-radius: 50%; background: #888; border: 2px solid #000;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <!-- Large Chart Glass Card -->
+            <div class="glass-card" style="min-height: 400px; display: flex; flex-direction: column;">
+                <div class="flex justify-between items-center mb-10">
+                    <h3 class="font-bold text-xl">Expenditure Velocity</h3>
+                    <div class="flex gap-2">
+                        <div style="width: 10px; height: 10px; border-radius: 2px; background: var(--color-aurora-1);"></div>
+                        <div style="width: 10px; height: 10px; border-radius: 2px; background: var(--color-aurora-4); opacity: 0.5;"></div>
+                    </div>
+                </div>
+                <div style="flex: 1; position: relative;">
+                    <!-- SVG Chart Glow -->
+                    <div style="position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.1), transparent); filter: blur(40px);"></div>
+                    <div style="height: 100%; width: 100%; border-bottom: 2px solid var(--color-glass-border); border-left: 2px solid var(--color-glass-border); display: flex; align-items: flex-end; gap: 1rem; padding: 2rem;">
+                        <div style="flex: 1; height: 40%; background: var(--aurora-gradient); border-radius: 10px 10px 0 0; opacity: 0.3;"></div>
+                        <div style="flex: 1; height: 60%; background: var(--aurora-gradient); border-radius: 10px 10px 0 0; opacity: 0.5;"></div>
+                        <div style="flex: 1; height: 85%; background: var(--aurora-gradient); border-radius: 10px 10px 0 0; opacity: 0.8;"></div>
+                        <div style="flex: 1; height: 55%; background: var(--aurora-gradient); border-radius: 10px 10px 0 0; opacity: 1; box-shadow: var(--glow-primary);"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transactions Glass Card -->
+            <div class="glass-card">
+                <h3 class="font-bold text-xl mb-10">Neural Feed</h3>
+                <div class="space-y-8">
+                    <div class="flex justify-between items-center pb-6 border-bottom" style="border-bottom: 1px solid var(--color-glass-border);">
+                        <div class="flex items-center gap-4">
+                            <div style="width: 45px; height: 45px; background: rgba(255,255,255,0.05); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">🚀</div>
+                            <div>
+                                <p class="font-bold">SpaceX Subscription</p>
+                                <p class="text-xs text-slate-500">Logistics • 2 mins ago</p>
+                            </div>
+                        </div>
+                        <span class="font-bold text-danger">-$12,400</span>
+                    </div>
+                    <div class="flex justify-between items-center pb-6 border-bottom" style="border-bottom: 1px solid var(--color-glass-border);">
+                        <div class="flex items-center gap-4">
+                            <div style="width: 45px; height: 45px; background: rgba(255,255,255,0.05); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">💎</div>
+                            <div>
+                                <p class="font-bold">Venture Funding</p>
+                                <p class="text-xs text-slate-500">Capital • 5 hours ago</p>
+                            </div>
+                        </div>
+                        <span class="font-bold text-success">+$250,000</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-4">
+                            <div style="width: 45px; height: 45px; background: rgba(255,255,255,0.05); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">⚡</div>
+                            <div>
+                                <p class="font-bold">Cloud Infrastructure</p>
+                                <p class="text-xs text-slate-500">Tech Ops • Yesterday</p>
+                            </div>
+                        </div>
+                        <span class="font-bold" style="color: var(--color-aurora-4);">-$1,200</span>
+                    </div>
+                </div>
+                <button class="btn-creative w-full mt-12" style="background: rgba(255,255,255,0.03); border: 1px solid var(--color-glass-border); color: white;">Deep History Audit</button>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

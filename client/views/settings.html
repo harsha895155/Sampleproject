@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | FintechPro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <style>
+        body { font-family: 'Outfit', sans-serif; margin: 0; background: #0F172A; color: white; }
+        
+        .sidebar {
+            width: 260px;
+            background: rgba(255,255,255,0.02);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255,255,255,0.08);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 2.5rem 1.25rem;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            width: 100%;
+            height: 54px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            padding: 0 1.25rem;
+            margin-bottom: 0.75rem;
+            color: #94A3B8;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            gap: 1rem;
+            box-sizing: border-box;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            color: #6366F1;
+            transform: translateX(5px);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, #6366F1, #8B5CF6);
+            color: white;
+            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4);
+        }
+
+        .content {
+            margin-left: 260px;
+            padding: 4rem;
+            min-height: 100vh;
+            background: radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.05), transparent 40%),
+                        radial-gradient(circle at 100% 100%, rgba(217, 70, 239, 0.05), transparent 40%);
+        }
+
+        .settings-container {
+            max-width: 900px;
+        }
+
+        .settings-section {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .settings-section:hover {
+            background: rgba(255,255,255,0.03);
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-info {
+            flex: 1;
+        }
+
+        .setting-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .setting-desc {
+            font-size: 0.85rem;
+            color: #64748B;
+        }
+
+        .setting-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 52px;
+            height: 28px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: #6366F1;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active::after {
+            left: 27px;
+        }
+
+        .setting-select {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            color: white;
+            font-family: inherit;
+            min-width: 180px;
+            cursor: pointer;
+        }
+
+        .setting-select:focus {
+            outline: none;
+            border-color: #6366F1;
+        }
+
+        .setting-input {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            color: white;
+            font-family: inherit;
+            min-width: 200px;
+        }
+
+        .setting-input:focus {
+            outline: none;
+            border-color: #6366F1;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .btn-setting {
+            padding: 0.625rem 1.5rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: white;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-setting:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: #6366F1;
+        }
+
+        .btn-danger {
+            background: rgba(244, 63, 94, 0.15);
+            border-color: rgba(244, 63, 94, 0.3);
+            color: #F43F5E;
+        }
+
+        .btn-danger:hover {
+            background: rgba(244, 63, 94, 0.25);
+            border-color: #F43F5E;
+        }
+
+        .admin-only {
+            display: none;
+        }
+
+        .badge-premium {
+            padding: 0.25rem 0.75rem;
+            background: linear-gradient(135deg, #6366F1, #D946EF);
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body class="creative-mode">
+    <div class="sidebar">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 4.5rem; padding-left: 0.5rem;">
+            <div style="width: 42px; height: 42px; background: linear-gradient(135deg, #6366F1, #D946EF); border-radius: 12px; transform: rotate(45deg); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);">
+                <span style="transform: rotate(-45deg); color: white; font-weight: 900; font-size: 1.2rem;">F</span>
+            </div>
+            <span style="font-weight: 900; font-size: 1.5rem; letter-spacing: -0.04em;">FINTECH<span style="color: #6366F1;">PRO</span></span>
+        </div>
+        
+        <a href="/views/dashboard.html" class="nav-item">
+            <span style="font-size: 1.25rem;">🏠</span>
+            <span>Dashboard</span>
+        </a>
+        <a href="/views/expenses.html" class="nav-item">
+            <span style="font-size: 1.25rem;">💸</span>
+            <span>Expenses</span>
+        </a>
+        <a href="/views/transactions.html" class="nav-item">
+            <span style="font-size: 1.25rem;">📋</span>
+            <span>Transactions</span>
+        </a>
+        <a href="/views/reports.html" class="nav-item">
+            <span style="font-size: 1.25rem;">📊</span>
+            <span>Reports</span>
+        </a>
+        <a href="/views/admin.html" id="adminNavItem" class="nav-item">
+            <span style="font-size: 1.25rem;">👤</span>
+            <span>Admin</span>
+        </a>
+        <a href="/views/profile.html" class="nav-item">
+            <span style="font-size: 1.25rem;">👤</span>
+            <span>Profile</span>
+        </a>
+        <a href="/views/settings.html" class="nav-item active">
+            <span style="font-size: 1.25rem;">⚙️</span>
+            <span>Settings</span>
+        </a>
+        <a href="/views/support.html" class="nav-item">
+            <span style="font-size: 1.25rem;">🎧</span>
+            <span>Support</span>
+        </a>
+        
+        <div style="flex: 1;"></div>
+        
+        <a href="/index.html" class="nav-item" style="margin-bottom: 0;">
+            <span style="font-size: 1.25rem;">🚪</span>
+            <span>Logout</span>
+        </a>
+    </div>
+
+    <main class="content">
+        <header style="margin-bottom: 5rem;">
+            <h1 style="font-size: 3.5rem; font-weight: 900; margin: 0; letter-spacing: -0.05em;"><span style="background: linear-gradient(to right, #6366F1, #D946EF); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Settings</span></h1>
+            <p style="color: #94A3B8; font-size: 1.1rem; font-weight: 500; margin-top: 0.5rem;">Configure your FintechPro experience and preferences.</p>
+        </header>
+
+        <div class="settings-container">
+            <!-- 1. Account & Security -->
+            <section class="settings-section">
+                <div class="section-header">
+                    <span style="font-size: 1.75rem;">🔐</span>
+                    <h2>Account & Security</h2>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Change Password</div>
+                        <div class="setting-desc">Update your password to keep your account secure</div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="btn-setting" onclick="changePassword()">Change</button>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Email Address</div>
+                        <div class="setting-desc" id="currentEmail">harsha1003@gmail.com</div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="btn-setting" onclick="updateEmail()">Update</button>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Two-Factor Authentication</div>
+                        <div class="setting-desc">Add an extra layer of security to your account</div>
+                    </div>
+                    <div class="setting-control">
+                        <div class="toggle-switch" id="toggle2FA" onclick="toggle2FA()"></div>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Login Activity</div>
+                        <div class="setting-desc">View your recent login sessions and devices</div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="btn-setting" onclick="viewLoginActivity()">View</button>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Logout from All Devices</div>
+                        <div class="setting-desc">End all active sessions except this one</div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="btn-setting" onclick="logoutAllDevices()">Logout All</button>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Delete Account</div>
+                        <div class="setting-desc">Permanently delete your account and all data</div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="btn-setting btn-danger" onclick="deleteAccount()">Delete</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Appearance & Preferences -->
+            <section class="settings-section">
+                <div class="section-header">
+                    <span style="font-size: 1.75rem;">🎨</span>
+                    <h2>Appearance & Preferences</h2>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Theme</div>
+                        <div class="setting-desc">Choose your interface theme</div>
+                    </div>
+                    <div class="setting-control">
+                        <select id="themeSelect" class="setting-select">
+                            <option value="dark">Dark (Current)</option>
+                            <option value="light">Light</option>
+                            <option value="system">System Default</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Currency</div>
+                        <div class="setting-desc">Default currency for transactions</div>
+                    </div>
+                    <div class="setting-control">
+                        <select id="currencySelect" class="setting-select">
+                            <option value="INR">INR (₹) - Indian Rupee</option>
+                            <option value="USD">USD ($) - US Dollar</option>
+                            <option value="EUR">EUR (€) - Euro</option>
+                            <option value="GBP">GBP (£) - British Pound</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Language</div>
+                        <div class="setting-desc">Interface language</div>
+                    </div>
+                    <div class="setting-control">
+                        <select id="languageSelect" class="setting-select">
+                            <option value="en">English</option>
+                            <option value="hi">हिन्दी (Hindi)</option>
+                            <option value="es">Español (Spanish)</option>
+                            <option value="fr">Français (French)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Date Format</div>
+                        <div class="setting-desc">How dates are displayed</div>
+                    </div>
+                    <div class="setting-control">
+                        <select id="dateFormatSelect" class="setting-select">
+                            <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                            <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                            <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Time Zone</div>
+                        <div class="setting-desc">Your local time zone</div>
+                    </div>
+                    <div class="setting-control">
+                        <select id="timezoneSelect" class="setting-select">
+                            <option value="IST">IST (India Standard Time)</option>
+                            <option value="EST">EST (Eastern Standard Time)</option>
+                            <option value="PST">PST (Pacific Standard Time)</option>
+                            <option value="GMT">GMT (Greenwich Mean Time)</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Budget & Financial Settings -->
+            <section class="settings-section">
+                <div class="section-header">
+                    <span style="font-size: 1.75rem;">💰</span>
+                    <h2>Budget & Financial Settings</h2>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Monthly Budget Limit</div>
+                        <div class="setting-desc">Set your overall monthly spending limit</div>
+                    </div>
+                    <div class="setting-control">
+                        <input type="number" id="monthlyBudget" class="setting-input" placeholder="₹50,000" value="50000">
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Budget Alert Threshold</div>
+                        <div class="setting-desc">Get alerted when you reach this % of budget</div>
+                    </div>
+                    <div class="setting-control">
+                        <select id="budgetThreshold" class="setting-select">
+                            <option value="50">50%</option>
+                            <option value="75">75%</option>
+                            <option value="80" selected>80%</option>
+                            <option value="90">90%</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Overspending Notifications</div>
+                        <div class="setting-desc">Alert me when I exceed my budget</div>
+                    </div>
+                    <div class="setting-control">
+                        <div class="toggle-switch active" id="toggleOverspend" onclick="toggleOverspending()"></div>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Reset Budget Monthly</div>
+                        <div class="setting-desc">Automatically reset budget on 1st of every month</div>
+                    </div>
+                    <div class="setting-control">
+                        <div class="toggle-switch active" id="toggleResetBudget" onclick="toggleResetBudget()"></div>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Category-wise Budget Limits</div>
+                        <div class="setting-desc">Set individual limits for each expense category</div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="btn-setting" onclick="manageCategoryBudgets()">Manage</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Notifications -->
+            <section class="settings-section">
+                <div class="section-header">
+                    <span style="font-size: 1.75rem;">🔔</span>
+                    <h2>Notifications</h2>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Email Notifications</div>
+                        <div class="setting-desc">Receive updates via email</div>
+                    </div>
+                    <div class="setting-control">
+                        <div class="toggle-switch active" id="toggleEmailNotif" onclick="toggleEmailNotif()"></div>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">In-App Notifications</div>
+                        <div class="setting-desc">Show notifications in the app</div>
+                    </div>
+                    <div class="setting-control">
+                        <div class="toggle-switch active" id="toggleInAppNotif" onclick="toggleInAppNotif()"></div>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Expense Approval Alerts</div>
+                        <div class="setting-desc">Notify when expenses are approved/rejected</div>
+                    </div>
+                    <div class="setting-control">
+                        <div class="toggle-switch active" id="toggleApprovalAlerts" onclick="toggleApprovalAlerts()"></div>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Budget Limit Alerts</div>
+                        <div class="setting-desc">Alert when approaching or exceeding budget</div>
+                    </div>
+                    <div class="setting-control">
+                        <div class="toggle-switch active" id="toggleBudgetAlerts" onclick="toggleBudgetAlerts()"></div>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Summary Emails</div>
+                        <div class="setting-desc">Receive weekly/monthly summary reports</div>
+                    </div>
+                    <div class="setting-control">
+                        <select id="summaryEmails" class="setting-select">
+                            <option value="none">Never</option>
+                            <option value="weekly" selected>Weekly</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. Business Settings (Admin Only) -->
+            <section class="settings-section admin-only" id="businessSettings">
+                <div class="section-header">
+                    <span style="font-size: 1.75rem;">👥</span>
+                    <h2>Business & Team Settings</h2>
+                    <span class="badge-premium">Admin Only</span>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Employee Management</div>
+                        <div class="setting-desc">Add, remove, and manage employee accounts</div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="btn-setting" onclick="window.location='/views/admin.html'">Manage</button>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Department Management</div>
+                        <div class="setting-desc">Create and organize departments</div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="btn-setting" onclick="manageDepartments()">Configure</button>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Approval Workflow</div>
+                        <div class="setting-desc">Configure expense approval process</div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="btn-setting" onclick="configureWorkflow()">Setup</button>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Company Budget Limits</div>
+                        <div class="setting-desc">Set organization-wide spending limits</div>
+                    </div>
+                    <div class="setting-control">
+                        <input type="number" class="setting-input" placeholder="₹10,00,000" value="1000000">
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. Data & Reports -->
+            <section class="settings-section">
+                <div class="section-header">
+                    <span style="font-size: 1.75rem;">📊</span>
+                    <h2>Data & Reports</h2>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Export All Data</div>
+                        <div class="setting-desc">Download your complete financial data</div>
+                    </div>
+                    <div class="setting-control">
+                        <select class="setting-select" style="width: 120px;">
+                            <option>PDF</option>
+                            <option>Excel</option>
+                            <option>CSV</option>
+                        </select>
+                        <button class="btn-setting" onclick="exportAllData()">Export</button>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Auto Monthly Reports</div>
+                        <div class="setting-desc">Automatically generate and email monthly reports</div>
+                    </div>
+                    <div class="setting-control">
+                        <div class="toggle-switch" id="toggleAutoReports" onclick="toggleAutoReports()"></div>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Data Retention Period</div>
+                        <div class="setting-desc">How long to keep old transaction data</div>
+                    </div>
+                    <div class="setting-control">
+                        <select id="retentionPeriod" class="setting-select">
+                            <option value="1">1 Year</option>
+                            <option value="2">2 Years</option>
+                            <option value="5" selected>5 Years</option>
+                            <option value="forever">Forever</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Backup & Restore</div>
+                        <div class="setting-desc">Create backups and restore previous data</div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="btn-setting" onclick="createBackup()">Backup Now</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. Integrations -->
+            <section class="settings-section">
+                <div class="section-header">
+                    <span style="font-size: 1.75rem;">🔗</span>
+                    <h2>Integrations</h2>
+                    <span class="badge-premium">Premium</span>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Bank Account Integration</div>
+                        <div class="setting-desc">Connect your bank for automatic transaction sync</div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="btn-setting" onclick="connectBank()">Connect</button>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">UPI & Payment Apps</div>
+                        <div class="setting-desc">Link UPI, PayPal, and other payment services</div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="btn-setting" onclick="connectPayment()">Setup</button>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Accounting Software</div>
+                        <div class="setting-desc">Sync with Tally, QuickBooks, or other systems</div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="btn-setting" onclick="connectAccounting()">Integrate</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8. Privacy & Legal -->
+            <section class="settings-section">
+                <div class="section-header">
+                    <span style="font-size: 1.75rem;">⚠️</span>
+                    <h2>Privacy & Legal</h2>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Privacy Policy</div>
+                        <div class="setting-desc">Read how we protect your data</div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="btn-setting" onclick="viewPrivacyPolicy()">View</button>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Terms & Conditions</div>
+                        <div class="setting-desc">Review our terms of service</div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="btn-setting" onclick="viewTerms()">View</button>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Data Usage Information</div>
+                        <div class="setting-desc">Learn how your data is used</div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="btn-setting" onclick="viewDataUsage()">Learn More</button>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Deactivate Account</div>
+                        <div class="setting-desc">Temporarily disable your account</div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="btn-setting btn-danger" onclick="deactivateAccount()">Deactivate</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Save Button -->
+        <div style="position: fixed; bottom: 2rem; right: 4rem; z-index: 50;">
+            <button onclick="saveAllSettings()" class="btn-creative btn-primary-creative" style="padding: 1rem 3rem; font-size: 0.9rem; box-shadow: 0 20px 50px rgba(99, 102, 241, 0.4);">
+                💾 Save All Settings
+            </button>
+        </div>
+    </main>
+
+    <script>
+        window.addEventListener('load', () => {
+            const loggedInUser = JSON.parse(localStorage.getItem('fintech_logged_in_user')) || { name: 'User', email: 'user@example.com', role: 'Individual' };
+
+            // RBAC: Handle visibility for Administrator
+            const userRole = (loggedInUser && loggedInUser.role) ? loggedInUser.role.toLowerCase() : '';
+            
+            // Show admin settings section if user is admin
+            if (userRole === 'administrator') {
+                const businessSettings = document.getElementById('businessSettings');
+                if (businessSettings) businessSettings.classList.remove('admin-only');
+            }
+            
+            // Handle admin navigation link
+            const adminLink = document.getElementById('adminNavItem');
+            if (adminLink) {
+                if (userRole === 'administrator') {
+                    adminLink.style.display = 'flex';
+                } else {
+                    adminLink.style.display = 'none';
+                }
+            }
+            
+            // Load saved settings
+            loadSettings();
+            
+            // Update email display
+            document.getElementById('currentEmail').textContent = loggedInUser.email || 'user@example.com';
+        });
+
+        function loadSettings() {
+            const settings = JSON.parse(localStorage.getItem('fintech_settings')) || {};
+            
+            if (settings.currency) document.getElementById('currencySelect').value = settings.currency;
+            if (settings.language) document.getElementById('languageSelect').value = settings.language;
+            if (settings.dateFormat) document.getElementById('dateFormatSelect').value = settings.dateFormat;
+            if (settings.timezone) document.getElementById('timezoneSelect').value = settings.timezone;
+            if (settings.monthlyBudget) document.getElementById('monthlyBudget').value = settings.monthlyBudget;
+            if (settings.budgetThreshold) document.getElementById('budgetThreshold').value = settings.budgetThreshold;
+            if (settings.summaryEmails) document.getElementById('summaryEmails').value = settings.summaryEmails;
+            if (settings.retentionPeriod) document.getElementById('retentionPeriod').value = settings.retentionPeriod;
+            if (settings.theme) document.getElementById('themeSelect').value = settings.theme;
+
+            // Load Toggles
+            const toggles = ['toggle2FA', 'toggleOverspend', 'toggleResetBudget', 'toggleEmailNotif', 'toggleInAppNotif', 'toggleApprovalAlerts', 'toggleBudgetAlerts', 'toggleAutoReports'];
+            toggles.forEach(id => {
+                if (settings[id] !== undefined) {
+                    const el = document.getElementById(id);
+                    if (settings[id]) el.classList.add('active');
+                    else el.classList.remove('active');
+                }
+            });
+        }
+
+        function saveAllSettings() {
+            const settings = {
+                currency: document.getElementById('currencySelect').value,
+                language: document.getElementById('languageSelect').value,
+                dateFormat: document.getElementById('dateFormatSelect').value,
+                timezone: document.getElementById('timezoneSelect').value,
+                monthlyBudget: document.getElementById('monthlyBudget').value,
+                budgetThreshold: document.getElementById('budgetThreshold').value,
+                summaryEmails: document.getElementById('summaryEmails').value,
+                retentionPeriod: document.getElementById('retentionPeriod').value,
+                theme: document.getElementById('themeSelect').value,
+                
+                // Save Toggles
+                toggle2FA: document.getElementById('toggle2FA').classList.contains('active'),
+                toggleOverspend: document.getElementById('toggleOverspend').classList.contains('active'),
+                toggleResetBudget: document.getElementById('toggleResetBudget').classList.contains('active'),
+                toggleEmailNotif: document.getElementById('toggleEmailNotif').classList.contains('active'),
+                toggleInAppNotif: document.getElementById('toggleInAppNotif').classList.contains('active'),
+                toggleApprovalAlerts: document.getElementById('toggleApprovalAlerts').classList.contains('active'),
+                toggleBudgetAlerts: document.getElementById('toggleBudgetAlerts').classList.contains('active'),
+                toggleAutoReports: document.getElementById('toggleAutoReports').classList.contains('active')
+            };
+
+            localStorage.setItem('fintech_settings', JSON.stringify(settings));
+            
+            // Apply theme immediately if needed (visual feedback)
+            if (settings.theme === 'light') {
+                document.body.style.background = '#F8FAFC';
+                document.body.style.color = '#1E293B';
+            } else {
+                document.body.style.background = '#0F172A';
+                document.body.style.color = 'white';
+            }
+
+            alert('✅ All settings saved successfully!');
+        }
+
+        function logoutUser() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('fintech_token');
+                localStorage.removeItem('fintech_logged_in_user');
+                localStorage.removeItem('fintech_name');
+                localStorage.removeItem('fintech_email');
+                window.location.href = '/views/login.html';
+            }
+        }
+
+        // Toggle Functions
+        function toggleElement(id) {
+            const toggle = document.getElementById(id);
+            toggle.classList.toggle('active');
+        }
+
+        function toggle2FA() { toggleElement('toggle2FA'); }
+        function toggleOverspending() { toggleElement('toggleOverspend'); }
+        function toggleResetBudget() { toggleElement('toggleResetBudget'); }
+        function toggleEmailNotif() { toggleElement('toggleEmailNotif'); }
+        function toggleInAppNotif() { toggleElement('toggleInAppNotif'); }
+        function toggleApprovalAlerts() { toggleElement('toggleApprovalAlerts'); }
+        function toggleBudgetAlerts() { toggleElement('toggleBudgetAlerts'); }
+        function toggleAutoReports() { toggleElement('toggleAutoReports'); }
+
+        async function changePassword() {
+            const newPass = prompt('Enter your new password (min 6 chars):');
+            if (newPass) {
+                if (newPass.length < 6) { return alert('Password must be at least 6 characters long.'); }
+                
+                try {
+                    const token = localStorage.getItem('fintech_token');
+                    const response = await fetch('/api/auth/profile', {
+                        method: 'PATCH',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ password: newPass })
+                    });
+                    
+                    const result = await response.json();
+                    if (response.status === 401) {
+                         alert('Session expired. Please login again.');
+                         logoutUser();
+                         return;
+                    }
+
+                    if (result.success) {
+                        alert('✅ Password changed successfully!');
+                    } else {
+                        alert('Error: ' + result.message);
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert('Connection failed.');
+                }
+            }
+        }
+
+        async function updateEmail() {
+            const newEmail = prompt('Enter your new email address:');
+            if (newEmail) {
+                try {
+                    const token = localStorage.getItem('fintech_token');
+                    const response = await fetch('/api/auth/profile', {
+                        method: 'PATCH',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ email: newEmail })
+                    });
+                    
+                    const result = await response.json();
+                    if (response.status === 401) {
+                         alert('Session expired. Please login again.');
+                         logoutUser();
+                         return;
+                    }
+
+                    if (result.success) {
+                        const user = JSON.parse(localStorage.getItem('fintech_logged_in_user'));
+                        user.email = newEmail;
+                        localStorage.setItem('fintech_logged_in_user', JSON.stringify(user));
+                        document.getElementById('currentEmail').textContent = newEmail;
+                        alert('✅ Email updated successfully!');
+                    } else {
+                        alert('Error: ' + result.message);
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert('Connection failed.');
+                }
+            }
+        }
+
+        function viewLoginActivity() {
+            alert('Login Activity:\n\n🖥️ Windows Desktop (Current)\n📱 Mobile App - 2 days ago\n💻 Chrome Browser - 5 days ago');
+        }
+
+        function logoutAllDevices() {
+            if (confirm('Are you sure you want to logout? (This will clear your current session)')) {
+                localStorage.removeItem('fintech_token');
+                localStorage.removeItem('fintech_logged_in_user');
+                alert('✅ Logged out successfully!');
+                window.location.href = '/views/login.html';
+            }
+        }
+
+        async function deleteAccount() {
+            const confirmation = prompt('Type "DELETE" to permanently delete your account:');
+            if (confirmation === 'DELETE') {
+                if (confirm('⚠️ This action cannot be undone. Are you absolutely sure?')) {
+                    try {
+                        const token = localStorage.getItem('fintech_token');
+                        const response = await fetch('/api/auth/me', {
+                            method: 'DELETE',
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        });
+                        
+                        const result = await response.json();
+                        if (result.success) {
+                            alert('✅ Account deleted successfully. We are sorry to see you go.');
+                            localStorage.clear();
+                            window.location.href = '/views/signup.html';
+                        } else {
+                            alert('Error: ' + result.message);
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        alert('Connection failed.');
+                    }
+                }
+            }
+        }
+
+        function manageCategoryBudgets() {
+            alert('Category Budget Manager:\n\nThis feature allows you to set individual spending limits for:\n• Technology\n• Travel\n• Food & Dining\n• Office Supplies\n• Entertainment');
+        }
+
+        function manageDepartments() {
+            alert('Department Management:\n\nCreate and organize departments:\n• Engineering\n• Marketing\n• Sales\n• HR\n• Finance');
+        }
+
+        function configureWorkflow() {
+            alert('Approval Workflow Configuration:\n\nSet up multi-level approval processes based on:\n• Expense amount\n• Department\n• Category');
+        }
+
+        async function exportAllData() {
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = 'Generating...';
+            btn.disabled = true;
+
+            try {
+                const token = localStorage.getItem('fintech_token');
+                
+                // Fetch Expenses
+                const expRes = await fetch('/api/expenses', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const expData = await expRes.json();
+                
+                if (!expData.success) throw new Error(expData.message);
+
+                const exportData = {
+                    metadata: {
+                        exportedAt: new Date().toISOString(),
+                        user: JSON.parse(localStorage.getItem('fintech_logged_in_user')).email
+                    },
+                    expenses: expData.data,
+                    settings: JSON.parse(localStorage.getItem('fintech_settings'))
+                };
+
+                const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `fintech-export-${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+                
+                alert('✅ Complete financial data exported successfully!');
+            } catch (err) {
+                console.error(err);
+                alert('Failed to export data: ' + err.message);
+            } finally {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        function createBackup() {
+            const backup = {
+                timestamp: new Date().toISOString(),
+                expenses: localStorage.getItem('fintech_expenses'),
+                balance: localStorage.getItem('fintech_balance'),
+                settings: localStorage.getItem('fintech_settings')
+            };
+            
+            const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `fintech-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            alert('✅ Backup created and downloaded!');
+        }
+
+        function connectBank() { alert('🏦 Bank integration: Coming soon with backend API!'); }
+        function connectPayment() { alert('💳 Payment integration: Coming soon with backend API!'); }
+        function connectAccounting() { alert('📊 Accounting software sync: Premium feature!'); }
+        function viewPrivacyPolicy() { alert('Privacy Policy\n\nFintechPro is committed to protecting your privacy and data.'); }
+        function viewTerms() { alert('Terms & Conditions\n\nBy using FintechPro, you agree to our terms of service.'); }
+        function viewDataUsage() { alert('Data Usage\n\nYour data is used only to provide financial management services.'); }
+        function deactivateAccount() {
+            if (confirm('Deactivate your account? You can reactivate it anytime by logging in.')) {
+                alert('Account deactivated. See you soon!');
+            }
+        }
+    </script>
+</body>
+</html>

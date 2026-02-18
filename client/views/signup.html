@@ -1,0 +1,488 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | FintechPro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <style>
+        body { font-family: 'Outfit', sans-serif; margin: 0; }
+        .auth-bg {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #030712;
+            background-image: var(--mesh-gradient);
+            padding: 3rem 1.5rem;
+        }
+        .signup-box {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 2.5rem;
+            padding: 3.5rem;
+            box-shadow: 0 40px 100px -20px rgba(0,0,0,0.5);
+        }
+        .input-group {
+            margin-bottom: 1.25rem;
+        }
+        .input-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #94A3B8;
+            margin-bottom: 0.6rem;
+        }
+        .simple-input {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 1rem;
+            padding: 1rem;
+            color: white;
+            width: 100%;
+            outline: none;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        .simple-input:focus {
+            border-color: #6366F1;
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+        }
+        
+        /* Dark Theme Select Dropdown */
+        select.simple-input option {
+            background: #1e293b;
+            color: white;
+            padding: 0.75rem;
+        }
+        
+        select.simple-input option:hover,
+        select.simple-input option:checked {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3));
+            color: #a5b4fc;
+        }
+    </style>
+</head>
+<body class="creative-mode">
+    <div class="auth-bg">
+        <div class="signup-box">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <div style="width: 50px; height: 50px; background: var(--aurora-gradient); border-radius: 12px; transform: rotate(45deg); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                    <span style="transform: rotate(-45deg); color: white; font-weight: 800; font-size: 1.25rem;">F</span>
+                </div>
+                <h1 style="font-size: 2.25rem; font-weight: 800; color: white;">Create Account</h1>
+                <p style="color: #94A3B8; margin-top: 0.5rem;">Start your financial journey today.</p>
+            </div>
+
+            <form id="signupForm">
+                <div id="registrationFields">
+                    <div class="input-group">
+                        <label class="input-label">Full Name</label>
+                        <input type="text" id="signupName" class="simple-input" placeholder="e.g. John Doe" required>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Email Address</label>
+                        <input type="email" id="signupEmail" class="simple-input" placeholder="e.g. john@example.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Phone Number</label>
+                        <input type="text" id="signupPhone" class="simple-input" placeholder="e.g. +1234567890" required>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="input-group">
+                            <label class="input-label">Password</label>
+                            <input type="password" id="signupPass" class="simple-input" placeholder="••••••••" required>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Confirm Pass</label>
+                            <input type="password" id="signupConfirm" class="simple-input" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Target Role</label>
+                        <select id="signupRole" class="simple-input" style="appearance: none; background: rgba(255,255,255,0.05) url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2394A3B8%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E') no-repeat right 1rem center; background-size: 1.25rem;" required>
+                            <option value="" disabled selected>Select your role</option>
+                            <option value="business">Business</option>
+                            <option value="organization">Organization</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-creative btn-primary-creative w-full" style="padding: 1.125rem; font-size: 1rem; border-radius: 1rem; margin-top: 1.5rem;">Create My Account</button>
+                </div>
+
+                <div id="otpFields" style="display: none;">
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <p style="color: #10B981; font-weight: 600;">Verification Code Sent!</p>
+                        <p style="color: #94A3B8; font-size: 0.875rem;">Please enter the 6-digit OTP sent to your email.</p>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Enter OTP</label>
+                        <input type="text" id="otpInput" class="simple-input" placeholder="000000" maxlength="6" style="text-align: center; font-size: 2rem; letter-spacing: 0.5rem;">
+                    </div>
+                    <button type="button" id="verifyOtpBtn" class="btn-creative btn-primary-creative w-full" style="padding: 1.125rem; font-size: 1rem; border-radius: 1rem; margin-top: 1.5rem;">Verify & Complete</button>
+                    <p style="text-align: center; margin-top: 1rem;">
+                        <a href="#" onclick="location.reload()" style="color: #94A3B8; font-size: 0.875rem; text-decoration: none;">Back to Signup</a>
+                    </p>
+                </div>
+            </form>
+
+            <div id="authFooter" style="margin-top: 2.5rem; text-align: center;">
+                <p style="color: #94A3B8; font-size: 0.875rem;">Already have an account? <a href="/views/login.html" style="color: white; font-weight: 700; text-decoration: none;">Login here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const signupForm = document.getElementById('signupForm');
+        const registrationFields = document.getElementById('registrationFields');
+        const otpFields = document.getElementById('otpFields');
+        const authFooter = document.getElementById('authFooter');
+        
+        let userEmail = '';
+
+        signupForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const fullName = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const phoneNumber = document.getElementById('signupPhone').value;
+            const password = document.getElementById('signupPass').value;
+            const confirm = document.getElementById('signupConfirm').value;
+            const role = document.getElementById('signupRole').value.toLowerCase();
+            const btn = e.target.querySelector('button');
+
+            if (password !== confirm) {
+                alert('ERROR: Passwords do not match.');
+                return;
+            }
+
+            btn.textContent = 'Creating Account...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/api/auth/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ fullName, email, phoneNumber, password, role })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    userEmail = email;
+                    registrationFields.style.display = 'none';
+                    otpFields.style.display = 'block';
+                    authFooter.style.display = 'none';
+                    alert(result.message);
+                } else {
+                    alert('Signup Failed: ' + result.message);
+                    btn.textContent = 'Create My Account';
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Server Error block! Please try again later.');
+                btn.textContent = 'Create My Account';
+                btn.disabled = false;
+            }
+        });
+
+        document.getElementById('verifyOtpBtn').addEventListener('click', async function() {
+            const otpCode = document.getElementById('otpInput').value;
+            const btn = this;
+
+            if (otpCode.length !== 6) {
+                alert('Please enter a valid 6-digit OTP.');
+                return;
+            }
+
+            btn.textContent = 'Verifying...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/api/auth/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: userEmail, otp: otpCode })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Store token and user info
+                    localStorage.setItem('fintech_token', result.data.token);
+                    localStorage.setItem('fintech_logged_in_user', JSON.stringify(result.data));
+                    localStorage.setItem('fintech_name', result.data.fullName);
+                    localStorage.setItem('fintech_email', result.data.email);
+
+                    alert('Verification Successful! Welcome to FintechPro.');
+                    window.location.href = '/views/dashboard.html';
+                } else {
+                    alert('Verification Failed: ' + result.message);
+                    btn.textContent = 'Verify & Complete';
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Verification Error. Please try again.');
+                btn.textContent = 'Verify & Complete';
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | FintechPro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <style>
+        body { font-family: 'Outfit', sans-serif; margin: 0; }
+        .auth-bg {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #030712;
+            background-image: var(--mesh-gradient);
+            padding: 3rem 1.5rem;
+        }
+        .signup-box {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 2.5rem;
+            padding: 3.5rem;
+            box-shadow: 0 40px 100px -20px rgba(0,0,0,0.5);
+        }
+        .input-group {
+            margin-bottom: 1.25rem;
+        }
+        .input-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #94A3B8;
+            margin-bottom: 0.6rem;
+        }
+        .simple-input {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 1rem;
+            padding: 1rem;
+            color: white;
+            width: 100%;
+            outline: none;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        .simple-input:focus {
+            border-color: #6366F1;
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+        }
+        
+        /* Dark Theme Select Dropdown */
+        select.simple-input option {
+            background: #1e293b;
+            color: white;
+            padding: 0.75rem;
+        }
+        
+        select.simple-input option:hover,
+        select.simple-input option:checked {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3));
+            color: #a5b4fc;
+        }
+    </style>
+</head>
+<body class="creative-mode">
+    <div class="auth-bg">
+        <div class="signup-box">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <div style="width: 50px; height: 50px; background: var(--aurora-gradient); border-radius: 12px; transform: rotate(45deg); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                    <span style="transform: rotate(-45deg); color: white; font-weight: 800; font-size: 1.25rem;">F</span>
+                </div>
+                <h1 style="font-size: 2.25rem; font-weight: 800; color: white;">Create Account</h1>
+                <p style="color: #94A3B8; margin-top: 0.5rem;">Start your financial journey today.</p>
+            </div>
+
+            <form id="signupForm">
+                <div id="registrationFields">
+                    <div class="input-group">
+                        <label class="input-label">Full Name</label>
+                        <input type="text" id="signupName" class="simple-input" placeholder="Full Name" required>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Email Address</label>
+                        <input type="email" id="signupEmail" class="simple-input" placeholder="@gmail.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Phone Number</label>
+                        <input type="text" id="signupPhone" class="simple-input" placeholder="phoneNumber" required>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="input-group">
+                            <label class="input-label">Password</label>
+                            <input type="password" id="signupPass" class="simple-input" placeholder="password" required>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Confirm Password</label>
+                            <input type="password" id="signupConfirm" class="simple-input" placeholder="confirm password" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">User Role</label>
+                        <select id="signupRole" class="simple-input" style="appearance: none; background: rgba(255,255,255,0.05) url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2394A3B8%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E') no-repeat right 1rem center; background-size: 1.25rem;" required>
+                            <option value="" disabled selected>Select your role</option>
+                            <option value="business">Business</option>
+                            <option value="organization">Organization</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-creative btn-primary-creative w-full" style="padding: 1rem; font-size: 1rem; width: 190px; height: 60px; border-radius: 5rem; width: 190px; height: 60px; margin-top: 1.5rem;">Create</button>
+                <a href="/index.html" class="btn-creative btn-primary-creative w-full" style="font-size: 1rem; background:(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3)); width: 190px; height: 60px; color: white; text-decoration: none;">Cancel</a>
+                </div>
+
+                <div id="otpFields" style="display: none;">
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <p style="color: #10B981; font-weight: 600;">Verification Code Sent!</p>
+                        <p style="color: #94A3B8; font-size: 0.875rem;">Please enter the 6-digit OTP sent to your email.</p>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Enter OTP</label>
+                        <input type="text" id="otpInput" class="simple-input" placeholder="Enter OTP" maxlength="6" style="text-align: center; font-size: 2rem; letter-spacing: 0.5rem;">
+                    </div>
+                    <button type="button" id="verifyOtpBtn" class="btn-creative btn-primary-creative w-full" style="padding: 1.125rem; font-size: 1rem; border-radius: 5rem; margin-top: 1.5rem;width: 160px; height: 60px;">Verify & Complete</button>
+                    <a href="/signup.html" class="btn-creative btn-primary-creative w-full" style="font-size: 1rem; background:(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3)); width: 160px; height: 60px; color: white; text-decoration: none;">Cancel</a>
+                    <p style="text-align: center; margin-top: 1rem;">
+                        <a href="#" onclick="location.reload()" style="color: #94A3B8; font-size: 0.875rem; text-decoration: none;">Back to Signup</a>
+                    </p>
+                </div>
+            </form>
+
+            <div id="authFooter" style="margin-top: 2.5rem; text-align: center;">
+                <p style="color: #94A3B8; font-size: 0.875rem;">Already have an account? <a href="/views/portal.html" style="color: white; padding: 1rem; font-weight: 700; text-decoration: none;">Login here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const signupForm = document.getElementById('signupForm');
+        const registrationFields = document.getElementById('registrationFields');
+        const otpFields = document.getElementById('otpFields');
+        const authFooter = document.getElementById('authFooter');
+        
+        let userEmail = '';
+
+        signupForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const fullName = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const phoneNumber = document.getElementById('signupPhone').value;
+            const password = document.getElementById('signupPass').value;
+            const confirm = document.getElementById('signupConfirm').value;
+            const role = document.getElementById('signupRole').value.toLowerCase();
+            const btn = e.target.querySelector('button');
+
+            if (password !== confirm) {
+                alert('ERROR: Passwords do not match.');
+                return;
+            }
+
+            btn.textContent = 'Creating Account...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/api/auth/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ fullName, email, phoneNumber, password, role })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    userEmail = email;
+                    registrationFields.style.display = 'none';
+                    otpFields.style.display = 'block';
+                    authFooter.style.display = 'none';
+                    alert(result.message);
+                } else {
+                    alert('Signup Failed: ' + result.message);
+                    btn.textContent = 'Create My Account';
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Server Error block! Please try again later.');
+                btn.textContent = 'Create My Account';
+                btn.disabled = false;
+            }
+        });
+
+        document.getElementById('verifyOtpBtn').addEventListener('click', async function() {
+            const otpCode = document.getElementById('otpInput').value;
+            const btn = this;
+
+            if (otpCode.length !== 6) {
+                alert('Please enter a valid 6-digit OTP.');
+                return;
+            }
+
+            btn.textContent = 'Verifying...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/api/auth/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: userEmail, otp: otpCode })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Store token and user info
+                    localStorage.setItem('fintech_token', result.data.token);
+                    localStorage.setItem('fintech_logged_in_user', JSON.stringify(result.data));
+                    localStorage.setItem('fintech_name', result.data.fullName);
+                    localStorage.setItem('fintech_email', result.data.email);
+
+                    alert('Verification Successful! Welcome to FintechPro.');
+                    window.location.href = '/views/dashboard.html';
+                } else {
+                    alert('Verification Failed: ' + result.message);
+                    btn.textContent = 'Verify & Complete';
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Verification Error. Please try again.');
+                btn.textContent = 'Verify & Complete';
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

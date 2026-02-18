@@ -1,13 +1,114 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>sampleproject</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FintechPro | The Future of Finance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/pages.css">
+    <style>
+        body { font-family: 'Outfit', sans-serif; }
+        .hero-creative {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding-top: 100px;
+        }
+        .aurora-sphere {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            filter: blur(100px);
+            opacity: 0.15;
+            border-radius: 50%;
+            z-index: -1;
+            animation: pulse-aurora 10s infinite alternate;
+        }
+        @keyframes pulse-aurora {
+            from { transform: scale(1) translate(0, 0); }
+            to { transform: scale(1.2) translate(50px, 50px); }
+        }
+    </style>
+</head>
+<body class="creative-mode">
+    <div class="aurora-sphere" style="top: -100px; left: -100px; background: var(--color-aurora-1);"></div>
+    <div class="aurora-sphere" style="bottom: -100px; right: -100px; background: var(--color-aurora-3);"></div>
+
+    <!-- Nav -->
+    <nav class="navbar" style="background: transparent; border: none; height: 100px;">
+        <div class="container flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div style="width: 40px; height: 40px; background: var(--aurora-gradient); border-radius: 12px; transform: rotate(45deg); display: flex; align-items: center; justify-content: center;">
+                    <span style="transform: rotate(-45deg); color: white; font-weight: 800;">F</span>
+                </div>
+                <span class="font-bold text-2xl tracking-tighter">FINTECH<span class="text-gradient-creative">PRO</span></span>
+            </div>
+            <div class="flex gap-4">
+                <a href="/views/login.html" class="btn-creative" style="color: white;">Login</a>
+                <a href="/views/signup.html" class="btn-creative btn-primary-creative">Get Infinite Access</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero-creative">
+        <div class="container text-center">
+            <span class="badge" style="background: rgba(255,255,255,0.1); border: 1px solid var(--color-glass-border); color: var(--color-aurora-4); margin-bottom: 2rem; padding: 0.5rem 1.5rem; letter-spacing: 0.2em; font-weight: 700;">WELCOME TO THE NEBULA</span>
+            <h1 style="font-size: 5rem; font-weight: 800; line-height: 1; margin-bottom: 2rem; letter-spacing: -0.04em;">Managing Finance <br> <span class="text-gradient-creative">Should Feel Magical.</span></h1>
+            <p style="font-size: 1.25rem; color: var(--text-secondary); max-width: 700px; margin: 0 auto 3rem; line-height: 1.6;">Level up your organization with the world's first immersive financial management platform. Transcend ordinary spreadsheets.</p>
+            
+            <div class="flex justify-center gap-6">
+                <a href="/views/signup.html" class="btn-creative btn-primary-creative" style="padding: 1.25rem 4rem; font-size: 1rem;">Launch Workspace</a>
+                <a href="#" class="btn-creative" style="border: 1px solid var(--color-glass-border); background: var(--color-glass-card); color: white;">Watch Trailer</a>
+            </div>
+
+            <!-- Floating Preview Card -->
+            <div class="mt-20 animate-float">
+                <div class="glass-card" style="max-width: 900px; margin: 0 auto; height: 400px; display: flex; align-items: center; justify-content: center; border-radius: 3rem;">
+                    <div style="text-align: center;">
+                        <div style="width: 80px; height: 80px; background: var(--aurora-gradient); border-radius: 50%; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 0 50px rgba(99, 102, 241, 0.5);">✨</div>
+                        <h3 class="font-bold text-2xl">Intuitive. Immersive. Intelligent.</h3>
+                        <p class="text-slate-400 mt-2">Dynamic dashboard preview coming soon...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section" style="padding-top: 100px;">
+        <div class="container">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div class="glass-card">
+                    <div style="font-size: 3rem; margin-bottom: 1.5rem;">🌌</div>
+                    <h4 class="font-bold text-xl mb-4">Galactic Tracking</h4>
+                    <p class="text-slate-400 text-sm">Real-time expense syncing across all dimensions of your business units.</p>
+                </div>
+                <div class="glass-card">
+                    <div style="font-size: 3rem; margin-bottom: 1.5rem;">🛡️</div>
+                    <h4 class="font-bold text-xl mb-4">Shield Protocols</h4>
+                    <p class="text-slate-400 text-sm">Quantum-level encryption ensuring your financial assets remain impenetrable.</p>
+                </div>
+                <div class="glass-card">
+                    <div style="font-size: 3rem; margin-bottom: 1.5rem;">📈</div>
+                    <h4 class="font-bold text-xl mb-4">Nebula Reports</h4>
+                    <p class="text-slate-400 text-sm">Deep AI-driven insights that forecast your organization's growth path.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="padding: 100px 0; background: rgba(0,0,0,0.3); margin-top: 100px;">
+        <div class="container text-center">
+            <p style="color: var(--text-secondary);">&copy; 2026 FintechPro. Beyond Finance.</p>
+        </div>
+    </footer>
+</body>
 </html>

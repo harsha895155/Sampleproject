@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FintechPro | Simple Expense Tracking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/pages.css">
+    <style>
+        body { font-family: 'Outfit', sans-serif; margin: 0; }
+    </style>
+</head>
+<body class="creative-mode">
+    <div class="aurora-sphere" style="top: -100px; left: -100px; background: #6366F1;"></div>
+    <div class="aurora-sphere" style="bottom: -100px; right: -100px; background: #D946EF;"></div>
+
+    <!-- Nav -->
+    <nav class="navbar" style="background: transparent; border: none; height: 100px;">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #6366F1, #8B5CF6, #D946EF); border-radius: 12px; transform: rotate(45deg); display: flex; align-items: center; justify-content: center;">
+                    <span style="transform: rotate(-45deg); color: white; font-weight: 800;">F</span>
+                </div>
+                <span style="color: white; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.05em;">FINTECH<span style="background: linear-gradient(135deg, #6366F1, #D946EF); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">PRO</span></span>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                <a href="/views/portal.html" class="btn-creative" style="color: white; text-decoration: none;">login</a>
+                <a href="/views/signup.html" class="btn-creative btn-primary-creative" style="text-decoration: none;">Join Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section style="min-height: calc(100vh - 100px); display: flex; align-items: center; justify-content: center; text-align: center;">
+        <div class="container">
+            <span class="badge" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #06B6D4; margin-bottom: 2rem; padding: 0.5rem 1.5rem; letter-spacing: 0.1em; font-weight: 800; border-radius: 99px;">VIBRANT & SIMPLE</span>
+            <h1 style="font-size: 5rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -0.04em; color: white;">Track Your Expenses <br> <span class="text-gradient-creative">The Easy Way.</span></h1>
+            <p style="font-size: 1.25rem; color: #94A3B8; max-width: 700px; margin: 0 auto 3rem; line-height: 1.6;">A beautiful and simple tool to manage your money. No complicated menus, just clear results.</p>
+            
+            <div style="display: flex; justify-content: center; gap: 1.5rem;">
+                <a href="/views/signup.html" class="btn-creative btn-primary-creative" style="padding: 1.25rem 4rem; font-size: 1rem; text-decoration: none;">Get Started</a>
+                <a href="#features" class="btn-creative" style="border: 1px solid rgba(255,255,255,0.1); width: 260px; background: rgba(255,255,255,0.03); color: white; text-decoration: none;">Learn More</a>
+            </div>
+
+            <!-- Floating Preview -->
+            <div class="mt-20 animate-float">
+                <div class="glass-card" style="max-width: 1000px; margin: 4rem auto 0; height: 400px; border-radius: 3rem; display: flex; align-items: center; justify-content: center;">
+                    <div style="text-align: center; color: white;">
+                        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #6366F1, #D946EF); border-radius: 50%; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 0 50px rgba(99, 102, 241, 0.5);">✨</div>
+                        <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 1rem;">Smart Dashboard</h2>
+                        <p style="color: #94A3B8;">Everything you need in one clean view.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" style="padding: 100px 0;">
+        <div class="container" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; max-width: 1200px; margin: 0 auto;">
+            <div class="glass-card" style="padding: 2.5rem;">
+                <div style="font-size: 2.5rem; margin-bottom: 1.5rem;">📱</div>
+                <h3 style="font-weight: 800; font-size: 1.25rem; margin-bottom: 1rem; color: white;">Easy Tracking</h3>
+                <p style="color: #94A3B8; line-height: 1.6;">Quickly log your daily spending with just a few clicks.</p>
+            </div>
+            <div class="glass-card" style="padding: 2.5rem;">
+                <div style="font-size: 2.5rem; margin-bottom: 1.5rem;">🔒</div>
+                <h3 style="font-weight: 800; font-size: 1.25rem; margin-bottom: 1rem; color: white;">Secure Data</h3>
+                <p style="color: #94A3B8; line-height: 1.6;">Your financial information is private and always safe.</p>
+            </div>
+            <div class="glass-card" style="padding: 2.5rem;">
+                <div style="font-size: 2.5rem; margin-bottom: 1.5rem;">📊</div>
+                <h3 style="font-weight: 800; font-size: 1.25rem; margin-bottom: 1rem; color: white;">Clear Reports</h3>
+                <p style="color: #94A3B8; line-height: 1.6;">See where your money goes with visual charts and tables.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer style="padding: 60px 0; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; color: #94A3B8; font-size: 0.875rem;">
+        <p>&copy; 2026 FintechPro. Professional & Simple.</p>
+        <p style="margin-top: 1rem;">Support: <a href="mailto:fintechhelp0936@gmail.com" style="color: #6366F1; text-decoration: none;">fintechhelp0936@gmail.com</a></p>
+    </footer>
+</body>
+</html>

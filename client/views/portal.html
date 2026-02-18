@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Portal | FintechPro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/variables.css">
+    <style>
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: #030712; 
+            background-image: var(--mesh-gradient, radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(217, 70, 239, 0.1) 0%, transparent 40%));
+            color: white; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center; 
+            overflow: hidden; 
+        }
+
+        .back-nav {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            color: #94A3B8;
+            text-decoration: none;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s;
+            z-index: 20;
+        }
+        .back-nav:hover { color: white; }
+
+        .cards-container {
+            display: flex;
+            gap: 3rem;
+            perspective: 1000px;
+            padding: 2rem;
+            z-index: 10;
+        }
+
+        /* CARD STYLES */
+        .portal-card {
+            width: 380px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            box-shadow: 0 20px 50px -10px rgba(0,0,0,0.5);
+        }
+
+        .portal-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Colors for specific roles */
+        .card-admin::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(239, 68, 68, 0.08) 0%, transparent 60%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .card-business::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 60%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* INTERNAL SLIDING MECHANISM */
+        .card-inner {
+            width: 200%;
+            height: 100%;
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .card-face {
+            width: 50%;
+            height: 100%;
+            padding: 3rem;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* FRONT FACE: SELECTION */
+        .icon-box {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .admin-icon { background: linear-gradient(135deg, #EF4444, #F59E0B); }
+        .business-icon { background: linear-gradient(135deg, #6366F1, #D946EF); }
+
+        .role-title { font-size: 1.75rem; font-weight: 800; margin: 0 0 1rem 0; text-align: center; }
+        .role-desc { color: #94A3B8; text-align: center; line-height: 1.6; margin-bottom: 2.5rem; font-size: 1rem; }
+
+        .btn-action {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 1rem;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 1rem;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .btn-login-dashboard { background: #EF4444; }
+        .btn-login-dashboard:hover { box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3); transform: translateY(-2px); }
+
+        .btn-login-biz { background: #6366F1; }
+        .btn-login-biz:hover { box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3); transform: translateY(-2px); }
+
+        .btn-create-biz { 
+            background: transparent; 
+            border: 1px solid rgba(255,255,255,0.2); 
+            color: #94A3B8; 
+            font-family: 'Outfit', sans-serif;
+        }
+        .btn-create-biz:hover { background: rgba(255,255,255,0.05); color: white; }
+
+        /* BACK FACE: LOGIN FORM */
+        .login-back-btn {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            background: none;
+            border: none;
+            color: #94A3B8;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+        }
+        .login-back-btn:hover { color: white; }
+
+        .form-group { width: 100%; margin-bottom: 1.25rem; }
+        .form-label { display: block; color: #94A3B8; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.5rem; text-transform: uppercase; }
+        .form-input {
+            width: 100%;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            color: white;
+            font-family: inherit;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        .form-input:focus { border-color: rgba(255,255,255,0.5); }
+
+        /* Animation Trigger Class */
+        .portal-card.show-form .card-inner {
+            transform: translateX(-50%);
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: absolute;
+            top:0; left:0; width:100%; height:100%;
+            background: rgba(3,7,18,0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 10;
+        }
+        .spinner {
+            width: 40px; height: 40px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top-color: #6366F1;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 850px) {
+            .cards-container { flex-direction: column; align-items: center; width: 100%; overflow-y: auto; }
+            .portal-card { height: auto; min-height: 500px; width: 100%; max-width: 400px; }
+            .back-nav { top: 1rem; left: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="/index.html" class="back-nav">← Back to Home</a>
+
+    <div class="cards-container">
+        
+        <!-- ADMINISTRATOR CARD -->
+        <div class="portal-card card-admin" id="card-admin">
+            <div class="loading-overlay" id="loader-admin">
+                <div class="spinner" style="border-top-color: #EF4444;"></div>
+                <span>Verifying Admin...</span>
+            </div>
+
+            <div class="card-inner">
+                <!-- Front -->
+                <div class="card-face">
+                    <div class="icon-box admin-icon">🛡️</div>
+                    <h2 class="role-title">Administrator</h2>
+                    <p class="role-desc">Access platform controls, user management, and system logs.</p>
+                    <button class="btn-action btn-login-dashboard" onclick="toggleForm('card-admin', true)">Login as Admin</button>
+                </div>
+
+                <!-- Back (Form) -->
+                <div class="card-face">
+                    <button class="login-back-btn" onclick="toggleForm('card-admin', false)">←</button>
+                    <h2 class="role-title" style="margin-bottom: 2rem;">Admin Access</h2>
+                    
+                    <form id="form-admin" style="width: 100%;" onsubmit="handleLogin(event, 'admin')">
+                        <div class="form-group">
+                            <label class="form-label">Admin Email</label>
+                            <input type="email" name="email" class="form-input" placeholder="@gmail.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input type="password" name="password" class="form-input" placeholder="password" required>
+                        </div>
+                        <button type="submit" class="btn-action btn-login-dashboard" style="margin-top: 1rem;">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- BUSINESS CARD -->
+        <div class="portal-card card-business" id="card-business">
+            <div class="loading-overlay" id="loader-business">
+                <div class="spinner"></div>
+                <span>Accessing Dashboard...</span>
+            </div>
+
+            <div class="card-inner">
+                <!-- Front -->
+                <div class="card-face">
+                    <div class="icon-box business-icon">🏢</div>
+                    <h2 class="role-title">Business & Org</h2>
+                    <p class="role-desc">Manage teams, track expenses, and view financial reports.</p>
+                    <button class="btn-action btn-login-biz" onclick="toggleForm('card-business', true)">Login to Dashboard</button>
+                    <a href="/views/signup.html" class="btn-action btn-create-biz">Create Account</a>
+                </div>
+
+                <!-- Back (Form) -->
+                <div class="card-face">
+                    <button class="login-back-btn" onclick="toggleForm('card-business', false)">←</button>
+                    <h2 class="role-title" style="margin-bottom: 2rem;">Business Login</h2>
+                    
+                    <form id="form-business" style="width: 100%;" onsubmit="handleLogin(event, 'business')">
+                        <div class="form-group">
+                            <label class="form-label">Work Email</label>
+                            <input type="email" name="email" class="form-input" placeholder="@gmail.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input type="password" name="password" class="form-input" placeholder="password" required>
+                        </div>
+                        <button type="submit" class="btn-action btn-login-biz" style="margin-top: 1rem;">Login</button>
+                    </form>
+                    
+                    <p style="margin-top: 1.5rem; font-size: 0.85rem; color: #94A3B8;">
+                        New here? <a href="/views/signup.html" style="color: #818CF8; text-decoration: none; font-weight: 700;">Join now</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Animation Toggle
+        function toggleForm(cardId, show) {
+            const card = document.getElementById(cardId);
+            if (show) {
+                card.classList.add('show-form');
+            } else {
+                card.classList.remove('show-form');
+            }
+        }
+
+        // Login Handler
+        async function handleLogin(e, roleType) {
+            e.preventDefault();
+            const form = e.target;
+            const email = form.email.value;
+            const password = form.password.value;
+            
+            // UI Feedback
+            const loaderId = roleType === 'admin' ? 'loader-admin' : 'loader-business';
+            const loader = document.getElementById(loaderId);
+            if(loader) loader.style.display = 'flex';
+
+            try {
+                // Sending roleType as role helps server validated that the user really has that role
+                // DB uses 'admin' not 'administrator'
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        email, 
+                        password,
+                        role: roleType 
+                    })
+                });
+
+                const result = await response.json();
+                
+                // Artificial delay for UX
+                await new Promise(r => setTimeout(r, 800));
+
+                if (response.ok && result.success) {
+                    const user = result.data;
+                    const userRole = user.role.toLowerCase();
+
+                    // Success
+                    localStorage.setItem('fintech_token', user.token);
+                    localStorage.setItem('fintech_logged_in_user', JSON.stringify(user));
+                    localStorage.setItem('fintech_name', user.fullName);
+                    localStorage.setItem('fintech_email', user.email);
+
+                    // Redirect
+                    if (userRole === 'admin' || userRole === 'administrator') {
+                        window.location.href = '/views/dashboard.html';
+                    } else {
+                        window.location.href = '/views/dashboard.html';
+                    }
+
+                } else {
+                    throw new Error(result.message || 'Login failed');
+                }
+
+            } catch (err) {
+                alert(err.message);
+                if(loader) loader.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

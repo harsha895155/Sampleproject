@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expenses | FintechPro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <style>
+        .gradient-bg {
+            background: var(--gradient-primary);
+            color: white;
+            padding: var(--spacing-8);
+            border-radius: var(--radius-xl);
+            margin-bottom: var(--spacing-10);
+            box-shadow: var(--shadow-colorful);
+        }
+        .category-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-shell">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="flex items-center gap-3">
+                    <div style="width: 32px; height: 32px; background: var(--gradient-primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.75rem;">FP</div>
+                    <span class="font-bold text-xl" style="letter-spacing: -0.025em;">FintechPro</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/views/dashboard.html" class="nav-item">
+                    <span>🏠</span> <span>Dashboard</span>
+                </a>
+                <a href="/views/expenses.html" class="nav-item active">
+                    <span>📉</span> <span>Expenses</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span>📈</span> <span>Income</span>
+                </a>
+                <a href="/views/reports.html" class="nav-item">
+                    <span>📊</span> <span>Reports</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span>⚙️</span> <span>Settings</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="/views/login.html" class="nav-item">
+                    <span>🚪</span> <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="gradient-bg">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h1 class="text-3xl font-bold mb-2">Manage Expenses</h1>
+                        <p style="opacity: 0.9;">Analyze and record your spending in high-fidelity.</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div style="text-align: right;">
+                            <p class="text-xs font-bold uppercase opacity-80">This Month</p>
+                            <h2 class="text-3xl font-bold">$3,750.40</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                <!-- Add Form -->
+                <div class="lg:col-span-1">
+                    <div class="card" style="position: sticky; top: var(--spacing-8);">
+                        <h3 class="font-bold text-xl mb-8">Record Spending</h3>
+                        <form>
+                            <div class="form-group">
+                                <label class="form-label">Amount ($)</label>
+                                <input type="number" class="form-input" placeholder="0.00" style="font-size: 1.25rem; font-weight: 700; color: var(--color-primary);">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Merchant Name</label>
+                                <input type="text" class="form-input" placeholder="Amazon, Uber, etc.">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Category</label>
+                                <select class="form-input">
+                                    <option>Software & SaaS</option>
+                                    <option>Dining & Food</option>
+                                    <option>Travel & Urban</option>
+                                    <option>Office Gear</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Date</label>
+                                <input type="date" class="form-input" value="2023-10-15">
+                            </div>
+                            <button class="btn btn-primary w-full mt-4" style="padding: 1rem;">Confirm Transaction</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- History -->
+                <div class="lg:col-span-2">
+                    <div class="flex justify-between items-center mb-8">
+                        <h3 class="font-bold text-xl">Luminous History</h3>
+                        <div class="flex gap-4">
+                            <input type="text" class="form-input" placeholder="Filter merchants..." style="width: 200px; margin-bottom: 0;">
+                            <button class="btn btn-outline" style="padding: 0.5rem 1rem;">Export</button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Transaction</th>
+                                    <th>Category</th>
+                                    <th>Date</th>
+                                    <th style="text-align: right;">Status</th>
+                                    <th style="text-align: right;">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="flex items-center gap-3">
+                                            <div style="width: 36px; height: 36px; border-radius: 10px; background: #EEE; display: flex; align-items: center; justify-content: center;">📦</div>
+                                            <span class="font-bold">Amazon AWS</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="category-dot" style="background: var(--color-primary);"></span>Software</td>
+                                    <td class="text-slate-500">Oct 14, 2023</td>
+                                    <td style="text-align: right;"><span class="badge badge-success">Approved</span></td>
+                                    <td style="text-align: right;" class="font-bold text-danger">-$240.00</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="flex items-center gap-3">
+                                            <div style="width: 36px; height: 36px; border-radius: 10px; background: #EEE; display: flex; align-items: center; justify-content: center;">☕</div>
+                                            <span class="font-bold">Starbucks</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="category-dot" style="background: var(--color-accent);"></span>Dining</td>
+                                    <td class="text-slate-500">Oct 12, 2023</td>
+                                    <td style="text-align: right;"><span class="badge badge-success">Approved</span></td>
+                                    <td style="text-align: right;" class="font-bold text-danger">-$12.50</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="flex items-center gap-3">
+                                            <div style="width: 36px; height: 36px; border-radius: 10px; background: #EEE; display: flex; align-items: center; justify-content: center;">🚗</div>
+                                            <span class="font-bold">Uber Trip</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="category-dot" style="background: var(--color-secondary);"></span>Travel</td>
+                                    <td class="text-slate-500">Oct 10, 2023</td>
+                                    <td style="text-align: right;"><span class="badge badge-success">Approved</span></td>
+                                    <td style="text-align: right;" class="font-bold text-danger">-$45.20</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

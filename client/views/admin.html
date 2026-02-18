@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | FintechPro</title>
+    <script>
+        // Security Guard: Check for administrator role before anything else
+        (function() {
+            const userData = localStorage.getItem('fintech_logged_in_user');
+            if (!userData) {
+                window.location.replace('/views/portal.html');
+                return;
+            }
+            try {
+                const user = JSON.parse(userData);
+                const role = user.role.toLowerCase();
+                if (!user || (role !== 'admin' && role !== 'administrator')) {
+                    console.warn('🚫 Unauthorised access attempt to Admin Dashboard');
+                    window.location.replace('/views/portal.html');
+                }
+            } catch (e) {
+                window.location.replace('/views/portal.html');
+            }
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <style>
+        body { font-family: 'Outfit', sans-serif; margin: 0; }
+        .sidebar {
+            width: 260px;
+            background: rgba(255,255,255,0.02);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255,255,255,0.08);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1.25rem;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 10;
+        }
+        .nav-item {
+            width: 100%;
+            height: 54px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0 1.25rem;
+            margin-bottom: 0.75rem;
+            color: #94A3B8;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            gap: 1rem;
+            box-sizing: border-box;
+        }
+        .nav-item:hover, .nav-item.active {
+            background: linear-gradient(135deg, #6366F1, #8B5CF6, #D946EF);
+            color: white;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
+            transform: translateX(5px);
+        }
+        .content {
+            margin-left: 260px;
+            padding: 4rem;
+            min-height: 100vh;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(3, 7, 18, 0.8);
+            backdrop-filter: blur(10px);
+            display: none;
+            justify-content: center;
+            align-items: flex-start;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            overflow-y: auto;
+            padding: 2rem 0;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .modal-overlay::-webkit-scrollbar {
+            display: none;
+        }
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-content {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 2rem;
+            padding: 3rem;
+            width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            margin: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .modal-content::-webkit-scrollbar {
+            display: none;
+        }
+        .admin-input {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            color: white;
+            width: 100%;
+            outline: none;
+            margin-bottom: 1.5rem;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+        .admin-input:focus {
+            border-color: #6366F1;
+        }
+        
+        /* Dark Theme Select Dropdown */
+        select.admin-input {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236366F1' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1.25rem center;
+            padding-right: 3rem;
+            cursor: pointer;
+        }
+        
+        select.admin-input option {
+            background: #1e293b;
+            color: white;
+            padding: 0.75rem;
+        }
+        
+        select.admin-input option:hover,
+        select.admin-input option:checked {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3));
+            color: #a5b4fc;
+        }
+    </style>
+</head>
+<body class="creative-mode">
+    <div class="sidebar">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 4rem; padding-left: 0.5rem;">
+            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #6366F1, #8B5CF6, #D946EF); border-radius: 10px; transform: rotate(45deg); display: flex; align-items: center; justify-content: center;">
+                <span style="transform: rotate(-45deg); color: white; font-weight: 800;">F</span>
+            </div>
+            <span style="font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em;">FINTECH<span class="text-gradient-creative">PRO</span></span>
+        </div>
+        
+        <a href="/views/dashboard.html" class="nav-item">
+            <span style="font-size: 1.25rem;">🏠</span>
+            <span>Dashboard</span>
+        </a>
+        <a href="/views/expenses.html" class="nav-item">
+            <span style="font-size: 1.25rem;">💸</span>
+            <span>Expenses</span>
+        </a>
+        <a href="/views/transactions.html" class="nav-item">
+            <span style="font-size: 1.25rem;">📋</span>
+            <span>Transactions</span>
+        </a>
+        <a href="/views/reports.html" class="nav-item">
+            <span style="font-size: 1.25rem;">📊</span>
+            <span>Reports</span>
+        </a>
+        <a href="/views/admin.html" id="adminNavItem" class="nav-item active">
+            <span style="font-size: 1.25rem;">👤</span>
+            <span>Admin</span>
+        </a>
+        <a href="/views/profile.html" class="nav-item">
+            <span style="font-size: 1.25rem;">👤</span>
+            <span>Profile</span>
+        </a>
+        <a href="/views/settings.html" class="nav-item">
+            <span style="font-size: 1.25rem;">⚙️</span>
+            <span>Settings</span>
+        </a>
+        <a href="/views/support.html" class="nav-item">
+            <span style="font-size: 1.25rem;">🎧</span>
+            <span>Support</span>
+        </a>
+        
+        <div style="flex: 1;"></div>
+        
+        <a href="/index.html" class="nav-item" style="margin-bottom: 0;">
+            <span style="font-size: 1.25rem;">🚪</span>
+            <span>Logout</span>
+        </a>
+    </div>
+
+    <main class="content">
+        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4rem;">
+                <div>
+                    <h1 style="font-size: 2.5rem; font-weight: 800; margin: 0; letter-spacing: -0.05em; color: white;">Platform <span class="text-gradient-creative">Control</span></h1>
+                    <p style="color: #64748B; margin: 0.5rem 0 0 0; font-weight: 600;">System Overview • <span id="totalUserCount" style="color: #6366F1;">0</span> Registered Users</p>
+                </div>
+            <div style="display: flex; align-items: center; gap: 1.5rem;">
+                <button class="btn-creative" style="background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); color: #818CF8;" id="createTeamBtn">Create Team</button>
+                <button class="btn-creative btn-primary-creative" id="addUserBtn">Add User</button>
+                <div id="headerAvatar" style="width: 50px; height: 50px; background: linear-gradient(135deg, #6366F1, #D946EF); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 800; color: white; background-size: cover; background-position: center; border: 1px solid rgba(255,255,255,0.08);">U</div>
+            </div>
+        </header>
+
+        <div id="adminTablesContainer">
+            <!-- Administrators Table -->
+            <div class="role-section" style="margin-bottom: 4rem;">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="width: 12px; height: 12px; background: #6366F1; border-radius: 3px;"></div>
+                    <h2 style="font-size: 1.25rem; font-weight: 800; margin: 0;">Platform <span class="text-gradient-creative">Administrators</span></h2>
+                </div>
+                <div class="glass-card" style="border-radius: 2rem; overflow: hidden;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr style="background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <th style="padding: 1.5rem 2rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800;">USER</th>
+                                <th style="padding: 1.5rem 2rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800;">STATUS</th>
+                                <th style="padding: 1.5rem 2rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800; text-align: right;">ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminTableBody">
+                            <!-- Administrators will appear here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Business Users Table -->
+            <div class="role-section" style="margin-bottom: 4rem;">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="width: 12px; height: 12px; background: #D946EF; border-radius: 3px;"></div>
+                    <h2 style="font-size: 1.25rem; font-weight: 800; margin: 0;">Business <span class="text-gradient-creative">Owners</span></h2>
+                </div>
+                <div class="glass-card" style="border-radius: 2rem; overflow: hidden;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr style="background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <th style="padding: 1.5rem 2rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800;">USER</th>
+                                <th style="padding: 1.5rem 2rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800;">STATUS</th>
+                                <th style="padding: 1.5rem 2rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800; text-align: right;">ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="businessTableBody">
+                            <!-- Business users will appear here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Organization Users Table -->
+            <div class="role-section" style="margin-bottom: 4rem;">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="width: 12px; height: 12px; background: #06B6D4; border-radius: 3px;"></div>
+                    <h2 style="font-size: 1.25rem; font-weight: 800; margin: 0;">Organization <span class="text-gradient-creative">Accounts</span></h2>
+                </div>
+                <div class="glass-card" style="border-radius: 2rem; overflow: hidden;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr style="background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <th style="padding: 1.5rem 2rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800;">USER</th>
+                                <th style="padding: 1.5rem 2rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800;">STATUS</th>
+                                <th style="padding: 1.5rem 2rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800; text-align: right;">ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orgTableBody">
+                            <!-- Organization users will appear here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- User Modal (Add/Edit) -->
+    <div id="userModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 id="modalTitle" style="font-weight: 800; margin-bottom: 2rem; font-size: 1.5rem;">Add New User</h2>
+            <form id="userForm">
+                <input type="hidden" id="userId">
+                <div id="registrationInputs">
+                    <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;">FULL NAME</label>
+                    <input type="text" id="userName" class="admin-input" placeholder="e.g. John Doe" required>
+                    
+                    <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;">EMAIL ADDRESS</label>
+                    <input type="email" id="userEmail" class="admin-input" placeholder="e.g. john@example.com" required>
+
+                    <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;">PHONE NUMBER</label>
+                    <input type="text" id="userPhone" class="admin-input" placeholder="phoneNumber" required>
+
+                    <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;">ROLE</label>
+                    <select id="userRole" class="admin-input">
+                        <option value="administrator">Administrator</option>
+                        <option value="business">Business</option>
+                        <option value="organization">Organization</option>
+                    </select>
+
+                    <!-- Change Password Toggle (for Edit mode) -->
+                    <div id="changePasswordToggle" style="display: none; margin-bottom: 1rem;">
+                        <button type="button" id="togglePassBtn" onclick="togglePasswordFields()" style="background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 12px; padding: 0.75rem 1.25rem; color: #818CF8; font-family: inherit; font-weight: 700; font-size: 0.8rem; cursor: pointer; width: 100%; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                            🔑 Change Password
+                        </button>
+                    </div>
+
+                    <div id="passwordFields">
+                        <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;" id="passLabel">PASSWORD</label>
+                        <input type="password" id="userPass" class="admin-input" placeholder="••••••••">
+
+                        <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;" id="confirmPassLabel">CONFIRM PASSWORD</label>
+                        <input type="password" id="userConfirmPass" class="admin-input" placeholder="••••••••">
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                        <button type="submit" class="btn-creative btn-primary-creative" style="flex: 1; padding: 1.25rem;">Save User</button>
+                        <button type="button" class="btn-creative" style="flex: 1; background: rgba(255,255,255,0.05); color: white;" onclick="closeModal()">Cancel</button>
+                    </div>
+                </div>
+
+                <!-- OTP Verification Inside Modal -->
+                <div id="otpSection" style="display: none;">
+                    <p style="color: #94A3B8; text-align: center; margin-bottom: 2rem;">A verification code has been sent to the user's email. Please enter it below to activate the account.</p>
+                    <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem; text-align: center;">6-DIGIT OTP</label>
+                    <input type="text" id="adminOtpInput" class="admin-input" placeholder="000000" maxlength="6" style="text-align: center; font-size: 2rem; letter-spacing: 12px; font-weight: 800;">
+                    
+                    <button type="button" class="btn-creative btn-primary-creative" style="width: 100%; padding: 1.25rem; margin-top: 1.5rem;" onclick="verifyUserOtp()">Verify & Activate</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login as User Modal -->
+    <div id="impersonateModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 style="font-weight: 800; margin-bottom: 1rem; font-size: 1.5rem;">Verify User Access</h2>
+            <p id="impersonateText" style="color: #94A3B8; margin-bottom: 2rem; font-size: 0.9rem;">Please enter the password for <span id="impersonateEmail" style="color: #6366F1; font-weight: 700;"></span> to continue.</p>
+            
+            <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;">USER PASSWORD</label>
+            <input type="password" id="impPassInput" class="admin-input" placeholder="••••••••" required>
+            
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <button onclick="confirmImpersonation()" class="btn-creative btn-primary-creative" style="flex: 1; padding: 1.25rem;">Verify & Login</button>
+                <button onclick="closeImpersonateModal()" class="btn-creative" style="flex: 1; background: rgba(255,255,255,0.05); color: white;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Team Modal -->
+    <div id="teamModal" class="modal-overlay">
+        <div class="modal-content" style="width: 600px;">
+            <h2 style="font-weight: 800; margin-bottom: 2rem; font-size: 1.5rem;">Create New Team</h2>
+            <form id="teamForm">
+                <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;">TEAM NAME</label>
+                <input type="text" id="teamName" class="admin-input" placeholder="e.g. Alpha Squad" required>
+
+                <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;">DESCRIPTION</label>
+                <input type="text" id="teamDesc" class="admin-input" placeholder="What does this team do?">
+
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 1rem;">SELECT TEAM MEMBERS</label>
+                    <!-- Search Bar Inside Modal -->
+                    <div style="position: relative; margin-bottom: 1.5rem;">
+                        <input type="text" id="teamUserSearch" class="admin-input" placeholder="Search by name, email, or phone..." onkeyup="filterTeamUsers()" style="margin-bottom: 0; padding-left: 3rem;">
+                        <span style="position: absolute; left: 1.25rem; top: 1.15rem; font-size: 1.2rem; opacity: 0.5;">🔍</span>
+                    </div>
+                    
+                    <div id="teamUserList" style="max-height: 300px; overflow-y: auto; background: rgba(0,0,0,0.2); border-radius: 1rem; padding: 1rem;">
+                        <!-- Users will be listed here with checkboxes -->
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn-creative btn-primary-creative" style="flex: 1; padding: 1.25rem;">Create Team</button>
+                    <button type="button" class="btn-creative" style="flex: 1; background: rgba(255,255,255,0.05); color: white;" onclick="closeTeamModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Global Error Handler for Diagnostics
+        window.onerror = function(msg, url, line, col, error) {
+            console.error('🆘 [Global Error] Trace:', { msg, url, line, col, error: error ? error.stack : 'No stack' });
+            return false;
+        };
+
+        window.addEventListener('load', () => {
+            const loggedInUser = JSON.parse(localStorage.getItem('fintech_logged_in_user'));
+            if (!loggedInUser) return;
+
+            // Avatar Logic
+            const avatar = document.getElementById('headerAvatar');
+            const savedPhoto = localStorage.getItem('fintech_profile_pic');
+            const userInitial = (loggedInUser.fullName ? loggedInUser.fullName.charAt(0) : 'U').toUpperCase();
+
+            if (savedPhoto && savedPhoto.startsWith('data:image')) {
+                avatar.style.backgroundImage = `url(${savedPhoto})`;
+                avatar.textContent = '';
+            } else {
+                avatar.textContent = userInitial;
+            }
+        });
+
+        const addUserBtn = document.getElementById('addUserBtn');
+        const createTeamBtn = document.getElementById('createTeamBtn');
+        const userModal = document.getElementById('userModal');
+        const teamModal = document.getElementById('teamModal');
+        const userForm = document.getElementById('userForm');
+        const teamForm = document.getElementById('teamForm');
+
+        // Hook up the buttons
+        if (addUserBtn) {
+            addUserBtn.addEventListener('click', () => {
+                openModal('add');
+            });
+        }
+        if (createTeamBtn) {
+            createTeamBtn.addEventListener('click', () => {
+                openTeamModal();
+            });
+        }
+        
+        let users = [];
+
+        async function fetchUsers() {
+            try {
+                const token = localStorage.getItem('fintech_token');
+                if (!token) {
+                    window.location.href = '/views/portal.html';
+                    return;
+                }
+
+                const apiUrl = '/api/admin/platform/users';
+                console.log(`📡 [Admin Page] Fetching from: ${apiUrl}`);
+                
+                const response = await fetch(apiUrl, {
+                    method: 'GET',
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                console.log(`📥 [Admin Page] Response Status: ${response.status} ${response.statusText}`);
+
+                if (response.status === 401) {
+                    alert('Session expired. Please login again.');
+                    window.location.href = '/views/portal.html';
+                    return;
+                }
+
+                if (response.status === 403) {
+                    const error = await response.json();
+                    alert('Access Denied: ' + (error.message || 'You do not have administrator privileges.'));
+                    window.location.href = '/views/dashboard.html';
+                    return;
+                }
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('❌ [Admin Page] Server Error Body:', errorText);
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                console.log('✅ [Admin Page] Success:', result.success);
+
+                if (result.success) {
+                    users = Array.isArray(result.data) ? result.data : [];
+                    console.log(`👤 [Admin Page] Total Users Loaded: ${users.length}`);
+                    renderUsers();
+                } else {
+                    console.error('❌ [Admin Page] API Logic Error:', result.message);
+                    alert('Error fetching users: ' + (result.message || 'Unknown server error'));
+                }
+            } catch (err) {
+                console.error('🔥 [Admin Page] Critical Fetch Error:', err);
+                let msg = 'Connection failed while fetching users.';
+                if (err instanceof SyntaxError) {
+                    msg = 'Data format error: Server returned HTML instead of JSON (Likely a 404 or backend crash).';
+                } else if (err.message.includes('Failed to fetch') || err.message.includes('HTTP')) {
+                    msg = `Backend unreachable (${err.message}). Ensure the Node server is running on port 5011.`;
+                }
+                alert(`${msg}\n\nPlease check the browser console for details.`);
+            }
+        }
+
+        function renderUsers() {
+            console.log('📊 [Admin Page] Rendering users:', users.length);
+            
+            // Update total counters if elements exist
+            const totalCountEl = document.getElementById('totalUserCount');
+            if (totalCountEl) totalCountEl.textContent = users.length;
+
+            const adminBody = document.getElementById('adminTableBody');
+            const businessBody = document.getElementById('businessTableBody');
+            const orgBody = document.getElementById('orgTableBody');
+
+            if (!adminBody || !businessBody || !orgBody) {
+                console.error('❌ [Admin Page] Table bodies not found!');
+                return;
+            }
+
+            adminBody.innerHTML = '';
+            businessBody.innerHTML = '';
+            orgBody.innerHTML = '';
+
+            if (users.length === 0) {
+                const emptyRow = `<tr><td colspan="3" style="padding: 2rem; text-align: center; color: #94A3B8;">No users found in the system.</td></tr>`;
+                adminBody.innerHTML = emptyRow;
+                businessBody.innerHTML = emptyRow;
+                orgBody.innerHTML = emptyRow;
+                return;
+            }
+
+            let counts = { admin: 0, business: 0, org: 0 };
+
+            users.forEach(user => {
+                const userId = String(user._id || user.id || '');
+                const rawRole = String(user.role || '').toLowerCase().trim();
+                
+                // Flexible role matching
+                const isPlatformAdmin = rawRole === 'administrator' || rawRole === 'admin';
+                const isBusinessOwner = rawRole === 'business';
+                
+                const initials = user.fullName ? user.fullName.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2) : 'U';
+                const roleColor = isPlatformAdmin ? '#6366F1' : (isBusinessOwner ? '#D946EF' : '#06B6D4');
+                
+                const row = `
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.02);">
+                        <td style="padding: 1.5rem 2rem;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <div style="width: 32px; height: 32px; background: ${roleColor}; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.75rem; color: white;">${initials}</div>
+                                <div>
+                                    <p style="font-weight: 800; margin: 0;">${user.fullName || 'Unnamed User'}</p>
+                                    <p style="font-size: 0.7rem; color: #64748B; margin: 0;">${user.email}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="padding: 1.5rem 2rem;">
+                            <span style="padding: 0.25rem 0.75rem; background: ${user.isEmailVerified ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)'}; color: ${user.isEmailVerified ? '#10B981' : '#F59E0B'}; border-radius: 99px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase;">
+                                ${user.isEmailVerified ? 'Active' : 'Pending Verification'}
+                            </span>
+                        </td>
+                        <td style="padding: 1.5rem 2rem; text-align: right;">
+                            <button class="btn-creative" style="padding: 0.5rem 1rem; font-size: 0.7rem; margin-right: 0.5rem; background: rgba(99, 102, 241, 0.1); color: #818CF8; border-color: rgba(99, 102, 241, 0.2);" onclick="initImpersonation('${userId}', '${user.email}')">Login</button>
+                            <button class="btn-creative" style="padding: 0.5rem 1rem; font-size: 0.7rem; margin-right: 0.5rem;" onclick="openModal('edit', '${userId}')">Edit</button>
+                            <button class="btn-creative" style="padding: 0.5rem 1rem; font-size: 0.7rem; background: rgba(244, 63, 94, 0.1); color: #F43F5E; border: none;" onclick="deleteUser('${userId}')">Delete</button>
+                        </td>
+                    </tr>
+                `;
+
+                if (isPlatformAdmin) {
+                    adminBody.insertAdjacentHTML('beforeend', row);
+                    counts.admin++;
+                } else if (isBusinessOwner) {
+                    businessBody.insertAdjacentHTML('beforeend', row);
+                    counts.business++;
+                } else {
+                    orgBody.insertAdjacentHTML('beforeend', row);
+                    counts.org++;
+                }
+            });
+
+            // Add "No users" message if a category is empty
+            if (counts.admin === 0) adminBody.innerHTML = `<tr><td colspan="3" style="padding: 2rem; text-align: center; color: #94A3B8;">No platform administrators found.</td></tr>`;
+            if (counts.business === 0) businessBody.innerHTML = `<tr><td colspan="3" style="padding: 2rem; text-align: center; color: #94A3B8;">No business owners registered yet.</td></tr>`;
+            if (counts.org === 0) orgBody.innerHTML = `<tr><td colspan="3" style="padding: 2rem; text-align: center; color: #94A3B8;">No organization accounts registered yet.</td></tr>`;
+        }
+
+        const registrationInputs = document.getElementById('registrationInputs');
+        const otpSection = document.getElementById('otpSection');
+        const adminOtpInput = document.getElementById('adminOtpInput');
+        let pendingVerificationEmail = '';
+
+        function openModal(mode, id = null) {
+            userModal.classList.add('active');
+            registrationInputs.style.display = 'block';
+            otpSection.style.display = 'none';
+
+            if (mode === 'edit') {
+                const user = users.find(u => u._id === id);
+                document.getElementById('modalTitle').textContent = 'Edit User';
+                document.getElementById('userId').value = user._id;
+                document.getElementById('userName').value = user.fullName;
+                document.getElementById('userEmail').value = user.email;
+                document.getElementById('userPhone').value = user.phoneNumber || '';
+                document.getElementById('userRole').value = user.role;
+                
+                // Hide password fields, show toggle button
+                document.getElementById('passwordFields').style.display = 'none';
+                document.getElementById('changePasswordToggle').style.display = 'block';
+                document.getElementById('togglePassBtn').innerHTML = '🔑 Change Password';
+                document.getElementById('userPass').required = false;
+                document.getElementById('userConfirmPass').required = false;
+                document.getElementById('userPass').value = '';
+                document.getElementById('userConfirmPass').value = '';
+            } else {
+                document.getElementById('modalTitle').textContent = 'Add New User';
+                userForm.reset();
+                document.getElementById('userId').value = '';
+                document.getElementById('passwordFields').style.display = 'block';
+                document.getElementById('changePasswordToggle').style.display = 'none';
+                document.getElementById('userPass').required = true;
+                document.getElementById('userConfirmPass').required = true;
+            }
+        }
+        function closeModal() {
+            userModal.classList.remove('active');
+        }
+
+        function togglePasswordFields() {
+            const passFields = document.getElementById('passwordFields');
+            const toggleBtn = document.getElementById('togglePassBtn');
+            if (passFields.style.display === 'none') {
+                passFields.style.display = 'block';
+                toggleBtn.innerHTML = '❌ Cancel Password Change';
+                toggleBtn.style.background = 'rgba(244, 63, 94, 0.1)';
+                toggleBtn.style.borderColor = 'rgba(244, 63, 94, 0.3)';
+                toggleBtn.style.color = '#F43F5E';
+            } else {
+                passFields.style.display = 'none';
+                document.getElementById('userPass').value = '';
+                document.getElementById('userConfirmPass').value = '';
+                toggleBtn.innerHTML = '🔑 Change Password';
+                toggleBtn.style.background = 'rgba(99, 102, 241, 0.1)';
+                toggleBtn.style.borderColor = 'rgba(99, 102, 241, 0.3)';
+                toggleBtn.style.color = '#818CF8';
+            }
+        }
+
+        async function deleteUser(rawId) {
+            // Ensure ID is a string and clean it
+            const id = String(rawId).trim();
+            console.log('🗑️ [Admin Page] Deletion attempt for ID:', id, 'Length:', id.length);
+
+            const loggedInUser = JSON.parse(localStorage.getItem('fintech_logged_in_user'));
+            const myId = loggedInUser ? (loggedInUser._id || loggedInUser.id) : null;
+            
+            // Client-side self-deletion check
+            if (myId && id === String(myId)) {
+                console.warn('🛑 [Admin Page] Blocked self-deletion locally');
+                alert('🛑 PERMISSION DENIED: You cannot delete your own administrator account while logged in.');
+                return;
+            }
+
+            if (!id || id === 'undefined' || id === 'null' || id.includes('[object')) {
+                console.error('❌ [Admin Page] Aborting: Invalid ID format detected:', id);
+                alert('Error: Data corruption detected. Please refresh the page and try again.');
+                return;
+            }
+
+            if (confirm('CRITICAL: Are you sure you want to permanently delete this user? This action cannot be undone.')) {
+                try {
+                    const token = localStorage.getItem('fintech_token');
+                    console.log(`📡 [Admin Page] Sending DELETE to: /api/admin/platform/users/${id}`);
+                    
+                    const response = await fetch(`/api/admin/platform/users/${id}`, {
+                        method: 'DELETE',
+                        headers: { 
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    console.log(`📥 [Admin Page] Status: ${response.status} (${response.statusText})`);
+
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.includes("application/json")) {
+                        const result = await response.json();
+                        if (result.success) {
+                            console.log('✅ [Admin Page] Success confirmed');
+                            alert('User deleted successfully.');
+                            fetchUsers();
+                        } else {
+                            console.error('❌ [Admin Page] Server Error:', result.message);
+                            alert('Error: ' + result.message);
+                        }
+                    } else {
+                        const text = await response.text();
+                        console.error('⚠️ [Admin Page] Non-JSON Response snippet:', text.substring(0, 300));
+                        alert(`Server error (${response.status}): Received unexpected response format. Check the console for details.`);
+                    }
+                } catch (err) {
+                    console.error('🆘 [Admin Page] Network Error:', err);
+                    alert(`Connection failed: ${err.message}`);
+                }
+            }
+        }
+
+        async function verifyUserOtp() {
+            const otp = adminOtpInput.value;
+            const email = pendingVerificationEmail;
+
+            try {
+                const response = await fetch('/api/auth/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, otp })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('User account activated successfully!');
+                    closeModal();
+                    fetchUsers();
+                } else {
+                    alert('Verification failed: ' + result.message);
+                }
+            } catch (err) {
+                alert('Connection error during verification.');
+            }
+        }
+
+        // --- Team Management Logic ---
+
+        function openTeamModal() {
+            teamModal.classList.add('active');
+            renderUserTeamList();
+        }
+
+        function closeTeamModal() {
+            teamModal.classList.remove('active');
+            teamForm.reset();
+        }
+
+        function renderUserTeamList() {
+            const list = document.getElementById('teamUserList');
+            list.innerHTML = '';
+            
+            if (users.length === 0) {
+                list.innerHTML = '<p style="text-align: center; color: #94A3B8; margin: 1rem 0;">No users available.</p>';
+                return;
+            }
+
+            users.forEach(user => {
+                const item = `
+                    <div class="team-user-item" data-search="${(user.fullName + ' ' + user.email + ' ' + (user.phoneNumber || '')).toLowerCase()}" style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.3s ease;">
+                        <input type="checkbox" name="teamMembers" value="${user._id}" style="width: 18px; height: 18px; accent-color: #6366F1; cursor: pointer;">
+                        <div style="flex: 1;">
+                            <p style="margin: 0; font-weight: 700; font-size: 0.9rem;">${user.fullName}</p>
+                            <p style="margin: 0; font-size: 0.75rem; color: #94A3B8;">${user.email}</p>
+                        </div>
+                        <span style="font-size: 0.65rem; padding: 0.2rem 0.5rem; background: rgba(99, 102, 241, 0.1); color: #818CF8; border-radius: 4px; text-transform: uppercase; font-weight: 800;">${user.role}</span>
+                    </div>
+                `;
+                list.insertAdjacentHTML('beforeend', item);
+            });
+        }
+
+        function filterTeamUsers() {
+            const query = document.getElementById('teamUserSearch').value.toLowerCase();
+            const items = document.querySelectorAll('.team-user-item');
+            
+            items.forEach(item => {
+                const searchText = item.getAttribute('data-search');
+                if (searchText.includes(query)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        teamForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('teamName').value;
+            const description = document.getElementById('teamDesc').value;
+            const checkboxes = document.querySelectorAll('input[name="teamMembers"]:checked');
+            const members = Array.from(checkboxes).map(cb => cb.value);
+
+            if (members.length === 0) {
+                alert('Please select at least one team member.');
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('fintech_token');
+                const response = await fetch('/api/admin/platform/teams', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ name, description, members })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Team created successfully! ✨');
+                    closeTeamModal();
+                } else {
+                    alert('Error creating team: ' + result.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Connection error while creating team.');
+            }
+        });
+
+        // Impersonation Logic
+        let currentImpersonationId = '';
+
+        function initImpersonation(id, email) {
+            currentImpersonationId = id;
+            document.getElementById('impersonateEmail').textContent = email;
+            
+            // UI Cleanup: Hide password requirement for admin-only switch
+            const passLabel = document.querySelector('label[for="impPassInput"]') || document.getElementById('impPassInput')?.previousElementSibling;
+            const passInput = document.getElementById('impPassInput');
+            const impersonateText = document.getElementById('impersonateText');
+
+            if (passInput) passInput.style.display = 'none';
+            if (passLabel) passLabel.style.display = 'none';
+            if (impersonateText) {
+                impersonateText.innerHTML = `You are about to switch your active session to <span style="color: #6366F1; font-weight: 700;">${email}</span>. You will be redirected to their dashboard.`;
+            }
+
+            document.getElementById('impersonateModal').classList.add('active');
+            console.log(`🎯 [Admin Page] Preparing impersonation for User ID: ${id}`);
+        }
+
+        function closeImpersonateModal() {
+            document.getElementById('impersonateModal').classList.remove('active');
+        }
+
+        async function confirmImpersonation() {
+            try {
+                const token = localStorage.getItem('fintech_token');
+                const response = await fetch(`/api/admin/platform/users/${currentImpersonationId}/impersonate`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    const userData = result.data;
+                    // Switch current session to impersonated user
+                    localStorage.setItem('fintech_token', userData.token);
+                    localStorage.setItem('fintech_logged_in_user', JSON.stringify(userData));
+                    
+                    alert(`✨ System successfully switched to ${userData.fullName}'s session.`);
+                    window.location.href = '/views/dashboard.html';
+                } else {
+                    alert('Impersonation failed: ' + (result.message || 'Unknown error.'));
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Connection error during administrative session switch.');
+            }
+        }
+
+        userForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('userId').value;
+            const fullName = document.getElementById('userName').value;
+            const email = document.getElementById('userEmail').value;
+            const phoneNumber = document.getElementById('userPhone').value;
+            const password = document.getElementById('userPass').value;
+            const confirmPass = document.getElementById('userConfirmPass').value;
+            const role = document.getElementById('userRole').value;
+
+            const token = localStorage.getItem('fintech_token');
+
+            if (id) {
+                // Edit existing
+                const updateData = { fullName, email, phoneNumber, role };
+
+                // Include password only if change password fields are visible and filled
+                if (password && password.trim() !== '') {
+                    if (password !== confirmPass) {
+                        alert('Passwords do not match!');
+                        return;
+                    }
+                    if (password.length < 6) {
+                        alert('Password must be at least 6 characters.');
+                        return;
+                    }
+                    updateData.password = password;
+                }
+
+                try {
+                    const response = await fetch(`/api/admin/platform/users/${id}`, {
+                        method: 'PATCH',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify(updateData)
+                    });
+                    
+                    const result = await response.json();
+                    if (result.success) {
+                        alert('User updated successfully!');
+                        fetchUsers();
+                        closeModal();
+                    } else {
+                        alert('Update failed: ' + result.message);
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert('Connection failed.');
+                }
+            } else {
+                // Add new with OTP
+                if (password !== confirmPass) {
+                    alert('Passwords do not match!');
+                    return;
+                }
+
+                // If no role selected, default to business
+                const userRole = role || 'business';
+
+                try {
+                    const response = await fetch('/api/admin/platform/users', {
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}` 
+                        },
+                        body: JSON.stringify({ 
+                            fullName, 
+                            email, 
+                            phoneNumber, 
+                            password, 
+                            role: userRole 
+                        })
+                    });
+
+                    const result = await response.json();
+                    
+                    if (response.ok && result.success) {
+                        pendingVerificationEmail = email;
+                        // Transition to OTP Mode
+                        registrationInputs.style.display = 'none';
+                        otpSection.style.display = 'block';
+                        document.getElementById('modalTitle').textContent = 'Verify User Account';
+                    } else {
+                        alert('Error creating user: ' + (result.message || 'Unknown server error'));
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert('Failed to connect to server while creating user.');
+                }
+            }
+        });
+
+        // Initialize table
+        fetchUsers();
+    </script>
+</body>
+</html>

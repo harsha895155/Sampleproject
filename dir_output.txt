@@ -1,0 +1,42 @@
+ Volume in drive C is harsha
+ Volume Serial Number is 1086-37A0
+
+ Directory of C:\Users\harsh\OneDrive\Desktop\tracking project\week2\sampleproject
+
+02/16/2026  06:13 PM    <DIR>          .
+02/16/2026  06:13 PM    <DIR>          ..
+02/09/2026  02:42 PM               253 .gitignore
+02/10/2026  07:16 PM                20 backend_log.txt
+02/10/2026  11:52 PM               356 check-port.js
+02/09/2026  09:37 PM               486 check-vite.js
+02/11/2026  01:41 AM             1,572 check_user.js
+02/11/2026  05:10 PM    <DIR>          client
+02/13/2026  09:52 PM                 0 console.log(`${u.email}
+02/11/2026  01:31 AM             1,174 dev.js
+02/14/2026  05:19 PM            30,545 dev_js_log.txt
+02/16/2026  06:21 PM                 0 dir_output.txt
+02/11/2026  05:10 PM    <DIR>          dist
+02/09/2026  02:42 PM               758 eslint.config.js
+02/11/2026  05:10 PM    <DIR>          fintech-pro
+02/11/2026  01:45 AM             1,533 force_delete.js
+02/09/2026  11:08 PM             6,343 index.html
+02/09/2026  09:21 PM               476 install-test.js
+02/13/2026  08:36 PM               131 install_log.txt
+02/09/2026  10:11 PM             2,762 manual-install.js
+02/09/2026  09:17 PM               117 node-debug.js
+02/13/2026  08:52 PM    <DIR>          node_modules
+02/16/2026  06:13 PM                10 node_version.txt
+02/14/2026  05:23 PM           155,375 package-lock.json
+02/13/2026  08:52 PM               934 package.json
+02/16/2026  06:12 PM                43 port_5000_status.txt
+02/11/2026  05:11 PM    <DIR>          public
+02/09/2026  08:02 PM             2,827 README.md
+02/11/2026  05:11 PM    <DIR>          server
+02/09/2026  09:27 PM               238 test-network.js
+02/09/2026  09:44 PM               203 test-node.js
+02/16/2026  06:11 PM                 0 test_fail.txt
+02/13/2026  08:12 PM    <DIR>          uploads
+02/14/2026  03:15 PM    <DIR>          views
+02/10/2026  11:58 PM             1,105 vite.config.js
+              25 File(s)        207,261 bytes
+              10 Dir(s)  404,303,450,112 bytes free

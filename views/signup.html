@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Started | FintechPro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #FDFCFE 0%, #EEF2FF 100%);
+            position: relative;
+        }
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-8) var(--spacing-4);
+        }
+        .auth-card {
+            width: 100%;
+            max-width: 520px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            padding: var(--spacing-12);
+            border-radius: var(--radius-xl);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 40px 80px -20px rgba(99, 102, 241, 0.2);
+        }
+        .role-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-4);
+            margin-bottom: var(--spacing-8);
+        }
+        .role-btn {
+            border: 2px solid var(--color-slate-100);
+            padding: var(--spacing-4);
+            border-radius: var(--radius-lg);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        .role-btn:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-4px);
+        }
+        .role-btn.active {
+            border-color: var(--color-primary);
+            background: var(--color-primary-light);
+            box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.1);
+        }
+        .gradient-text {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="text-center mb-10">
+                <h1 class="font-bold text-3xl gradient-text" style="margin-bottom: var(--spacing-2);">Create Account</h1>
+                <p class="text-sm text-slate-500">Experience the world's most colorful finance tool.</p>
+            </div>
+
+            <form action="/views/dashboard.html">
+                <div class="form-group">
+                    <label class="form-label">Pick Your Identity</label>
+                    <div class="role-selector">
+                        <div class="role-btn active">
+                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">👑</div>
+                            <strong style="font-size: 0.875rem;">Enterprise</strong>
+                        </div>
+                        <div class="role-btn">
+                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🎨</div>
+                            <strong style="font-size: 0.875rem;">Creative</strong>
+                        </div>
+                        <div class="role-btn">
+                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🚀</div>
+                            <strong style="font-size: 0.875rem;">Startup</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" placeholder="Wanda Maximov" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Organization</label>
+                        <input type="text" class="form-input" placeholder="Marvel Studios" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Professional Email</label>
+                    <input type="email" class="form-input" placeholder="@gmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Secure Password</label>
+                    <input type="password" class="form-input" placeholder="password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-full mt-4" style="padding: 1rem; font-size: 1.125rem;">Scale My Business Now</button>
+                <button type="cancel" class="btn btn-primary w-full mt-4" style="padding: 1rem; font-size: 1.125rem;">Cancel</button>
+            </form>
+
+            <div style="margin-top: var(--spacing-10); text-align: center;">
+                <p class="text-sm text-slate-600">Already part of the vibrant community? <a href="/views/login.html" class="font-bold text-primary" style="text-decoration: none;">Sign in</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
